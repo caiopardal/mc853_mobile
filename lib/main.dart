@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:inscritus/about_app/about.dart';
 import 'authentication_bloc/authentication_bloc.dart';
 import 'home_screen.dart';
 import 'login/login_screen.dart';
@@ -23,6 +24,7 @@ void main() {
 }
 
 class App extends StatelessWidget {
+  String userName;
   final UserRepository _userRepository;
 
   App({Key key, @required UserRepository userRepository})
@@ -39,11 +41,16 @@ class App extends StatelessWidget {
             return LoginScreen(userRepository: _userRepository);
           }
           if (state is Authenticated) {
+            userName = state.displayName;
             return HomeScreen(name: state.displayName);
           }
           return SplashScreen();
         },
       ),
+      routes: {
+        '/home': (ctx) => HomeScreen(name: userName),
+        '/about': (ctx) => About(),
+      },
     );
   }
 }

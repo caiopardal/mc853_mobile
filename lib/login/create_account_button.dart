@@ -14,8 +14,18 @@ class CreateAccountButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlatButton(
-      child: Text(
-        'Create an Account',
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: Colors.black,
+              width: 1.0,
+            ),
+          ),
+        ),
+        child: Text(
+          'Crie uma conta',
+        ),
       ),
       onPressed: () {
         Navigator.of(context).push(
