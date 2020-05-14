@@ -1,50 +1,49 @@
-import 'package:MC853_Mobile/home/view/home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/date_symbol_data_local.dart';
+import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'authentication_bloc/authentication_bloc.dart';
+import 'home_screen.dart';
+import 'login/login_screen.dart';
+import 'simple_bloc_delegate.dart';
+import 'splash_screen.dart';
+import 'user_repository.dart';
 
-Future<void> main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
-
-  runApp(Inscritus());
+  BlocSupervisor.delegate = SimpleBlocDelegate();
+  final UserRepository userRepository = UserRepository();
+  runApp(
+    BlocProvider(
+      create: (context) => AuthenticationBloc(
+        userRepository: userRepository,
+      )..add(AppStarted()),
+      child: App(userRepository: userRepository),
+    ),
+  );
 }
 
-class Inscritus extends StatelessWidget {
+class App extends StatelessWidget {
+  final UserRepository _userRepository;
+
+  App({Key key, @required UserRepository userRepository})
+      : assert(userRepository != null),
+        _userRepository = userRepository,
+        super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    initializeDateFormatting("pt_BR", null);
     return MaterialApp(
-      theme: ThemeData(
-        appBarTheme: AppBarTheme(
-          elevation: 0,
-          brightness: Brightness.dark,
-          color: Colors.transparent,
-          // This removes the shadow from all App Bars.
-        ),
-        primaryColor: Colors.white,
-        accentColor: Color.fromRGBO(255, 135, 80, 1),
-        primaryColorDark: Color(0xFF000034),
-        fontFamily: 'Montserrat',
-        bottomSheetTheme: BottomSheetThemeData(
-          backgroundColor: Colors.transparent,
-        ),
-        textTheme: ThemeData().textTheme.copyWith(
-              body1: TextStyle(
-                color: Color.fromRGBO(17, 30, 43, 1),
-              ),
-            ),
+      home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        builder: (context, state) {
+          if (state is Unauthenticated) {
+            return LoginScreen(userRepository: _userRepository);
+          }
+          if (state is Authenticated) {
+            return HomeScreen(name: state.displayName);
+          }
+          return SplashScreen();
+        },
       ),
-      initialRoute: '/home',
-      routes: {
-        '/home': (ctx) => HomePage(
-              title: "Inscritus",
-            ),
-      },
     );
   }
 }
