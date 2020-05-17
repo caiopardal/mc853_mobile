@@ -18,16 +18,15 @@ void main() {
       create: (context) => AuthenticationBloc(
         userRepository: userRepository,
       )..add(AppStarted()),
-      child: App(userRepository: userRepository),
+      child: Inscritus(userRepository: userRepository),
     ),
   );
 }
 
-class App extends StatelessWidget {
-  String userName;
+class Inscritus extends StatelessWidget {
   final UserRepository _userRepository;
 
-  App({Key key, @required UserRepository userRepository})
+  Inscritus({Key key, @required UserRepository userRepository})
       : assert(userRepository != null),
         _userRepository = userRepository,
         super(key: key);
@@ -41,15 +40,14 @@ class App extends StatelessWidget {
             return LoginScreen(userRepository: _userRepository);
           }
           if (state is Authenticated) {
-            userName = state.displayName;
-            return HomeScreen(name: state.displayName);
+            return HomeScreen(email: state.displayName);
           }
           return SplashScreen();
         },
       ),
       routes: {
-        '/home': (ctx) => HomeScreen(name: userName),
-        '/about': (ctx) => About(),
+        // '/home': (ctx) => HomeScreen(name: userName),
+        // '/about': (ctx) => About(),
       },
     );
   }
