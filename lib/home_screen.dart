@@ -11,9 +11,6 @@ import 'package:inscritus/about_app/about.dart';
 import 'package:inscritus/dashboard/dashboard.dart';
 import 'package:inscritus/events/events.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'authentication_bloc/authentication_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   final String email;
