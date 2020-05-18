@@ -12,10 +12,10 @@ class DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     var _height = MediaQuery.of(context).size.height;
     var announcements = {
-      "text":
-          "Some pictures of winners have been posted to our Facebook! Watch our social media for many more event photos to come! :)",
-      "ts": "1571878519.113700"
+      "text": "Follow us on social medias",
+      "ts": "1571908519.113700",
     };
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Container(
@@ -25,27 +25,50 @@ class DashboardState extends State<Dashboard> {
           physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Announcements',
-                style: Theme.of(context).textTheme.subhead,
+              Container(
+                margin: const EdgeInsets.all(
+                  20.0,
+                ),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Colors.black,
+                      width: 1.0,
+                    ),
+                  ),
+                ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 10.0,
+                ),
+                child: Text(
+                  'Anúncios',
+                  style: TextStyle(
+                    fontSize: 25.0,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: 10.0,
                 ),
-                // child: Expanded(
-                //   child: SizedBox(
-                //     height: _height,
-                child: new ListView.builder(
-                  padding: EdgeInsets.only(
-                    bottom: 25.0,
+                child: SizedBox(
+                  height: _height,
+                  child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.only(
+                      bottom: 25.0,
+                    ),
+                    itemCount: 6,
+                    itemBuilder: (context, index) {
+                      return AnnouncementCard(
+                          resource: Announcement.fromJson(announcements));
+                    },
                   ),
-                  itemCount: announcements.length,
-                  itemBuilder: (context, index) {
-                    return AnnouncementCard(
-                        resource: Announcement.fromJson(announcements));
-                  },
                 ),
               ),
             ],

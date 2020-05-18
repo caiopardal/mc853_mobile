@@ -5,6 +5,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
+import 'package:hidden_drawer_menu/hidden_drawer/screen_hidden_drawer.dart';
+import 'package:hidden_drawer_menu/menu/item_hidden_menu.dart';
 import 'package:inscritus/about_app/about.dart';
 import 'package:inscritus/dashboard/dashboard.dart';
 import 'package:inscritus/events/events.dart';
@@ -26,9 +28,25 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _currentBottomNavItemIndex = 0;
+  List<ScreenHiddenDrawer> items = List();
 
   @override
   void initState() {
+    items.add(new ScreenHiddenDrawer(
+        new ItemHiddenMenu(
+          name: "About",
+          baseStyle: TextStyle(color: Colors.black, fontSize: 28.0),
+          colorLineSelected: Colors.orange,
+        ),
+        About()));
+
+    items.add(new ScreenHiddenDrawer(
+        new ItemHiddenMenu(
+          name: "Events",
+          baseStyle: TextStyle(color: Colors.black, fontSize: 28.0),
+          colorLineSelected: Colors.orange,
+        ),
+        Events()));
     super.initState();
   }
 
@@ -180,19 +198,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text('Inscritus'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.exit_to_app),
-            onPressed: () {
-              BlocProvider.of<AuthenticationBloc>(context).add(
-                LoggedOut(),
-              );
-            },
-          )
-        ],
-      ),
       resizeToAvoidBottomPadding: false,
       backgroundColor: Color(0xFFE0F2F1),
       body: _bottomNavPages[_currentBottomNavItemIndex],
@@ -208,7 +213,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         elevation: 4.0,
         splashColor: Colors.white,
         isExtended: false,
-        foregroundColor: Colors.black,
+        foregroundColor: Colors.white,
         backgroundColor: Color(0xFF1E90FF),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

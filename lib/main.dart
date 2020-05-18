@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inscritus/about_app/about.dart';
+import 'package:inscritus/inscritus_app.dart';
 import 'authentication_bloc/authentication_bloc.dart';
 import 'home_screen.dart';
 import 'login/login_screen.dart';
@@ -40,7 +41,7 @@ class Inscritus extends StatelessWidget {
             return LoginScreen(userRepository: _userRepository);
           }
           if (state is Authenticated) {
-            return HomeScreen(email: state.displayName);
+            return InscritusApp(email: state.displayName);
           }
           return SplashScreen();
         },
