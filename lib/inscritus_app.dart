@@ -4,6 +4,8 @@ import 'package:hidden_drawer_menu/hidden_drawer/hidden_drawer_menu.dart';
 import 'package:hidden_drawer_menu/hidden_drawer/screen_hidden_drawer.dart';
 import 'package:inscritus/about_app/about.dart';
 import 'package:inscritus/home_screen.dart';
+import 'package:inscritus/qr_scanner/QRScanner.dart';
+import 'package:inscritus/map/map.dart';
 
 import 'authentication_bloc/authentication_bloc.dart';
 
@@ -38,6 +40,22 @@ class _InscritusAppState extends State<InscritusApp> {
           colorLineSelected: Colors.orange,
         ),
         About()));
+
+    items.add(new ScreenHiddenDrawer(
+        new ItemHiddenMenu(
+          name: "Scans",
+          baseStyle: TextStyle(color: Colors.black, fontSize: 28.0),
+          colorLineSelected: Colors.orange,
+        ),
+        QRScanner()));
+
+    items.add(new ScreenHiddenDrawer(
+        new ItemHiddenMenu(
+          name: "Mapa",
+          baseStyle: TextStyle(color: Colors.black, fontSize: 28.0),
+          colorLineSelected: Colors.orange,
+        ),
+        Map()));
 
     items.add(
       new ScreenHiddenDrawer(
