@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:inscritus/about_app/about.dart';
 import 'package:inscritus/inscritus_app.dart';
 import 'authentication_bloc/authentication_bloc.dart';
-import 'home_screen.dart';
 import 'login/login_screen.dart';
 import 'simple_bloc_delegate.dart';
 import 'splash_screen.dart';
