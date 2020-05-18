@@ -58,18 +58,26 @@ class EventsState extends State<Events> with SingleTickerProviderStateMixin {
   static List<Event> cachedEvents;
   static DateTime cacheTTL = DateTime.now();
   Stream<List<Event>> _getEvents() {
+    var newDate = DateTime.now();
+    var cachedEvents = [
+      Event.fromJson({
+        "summary": "Workshop de node js",
+        "location": "Saguão Principal",
+        "start": {
+          "dateTime": newDate.toIso8601String(),
+        },
+      }),
+      Event.fromJson({
+        "summary": "Workshop de React js",
+        "location": "Saguão Principal",
+        "start": {
+          "dateTime": newDate.toIso8601String(),
+        },
+      }),
+    ];
+
     var streamctl = StreamController<List<Event>>();
-    // if (cachedEvents != null) {
-    //   streamctl.sink.add(cachedEvents);
-    // }
-    // if (cacheTTL.isBefore(DateTime.now())) {
-    //   print("cache miss");
-    //   dayofEventsResources().then((events) {
-    //     streamctl.sink.add(events);
-    //     cachedEvents = events;
-    //     cacheTTL = DateTime.now().add(Duration(minutes: 30));
-    //   });
-    // }
+    streamctl.sink.add(cachedEvents);
     return streamctl.stream;
   }
 
