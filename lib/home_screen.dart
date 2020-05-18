@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
 import 'package:inscritus/about_app/about.dart';
+import 'package:inscritus/dashboard/dashboard.dart';
+import 'package:inscritus/events/events.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,10 +36,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   ///                     BOTTOM NAV PAGES
   ///===========================================================
   final _bottomNavPages = <Widget>[
-    About(),
-    About(),
-    // Dashboard(),
-    // Events(),
+    // About(),
+    Dashboard(),
+    Events(),
   ];
 
   ///===========================================================
