@@ -2,7 +2,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
-import 'package:inscritus/qr_scanner/newScanner.dart';
+import 'package:inscritus/views/qr_scanner/newScanner.dart';
 
 class QRScanner extends StatefulWidget {
   static String userEmail, userPassword;

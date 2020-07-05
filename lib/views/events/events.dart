@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:inscritus/events/events_for_day.dart';
 import 'package:inscritus/models/models.dart';
+import 'package:inscritus/views/events/events_for_day.dart';
 
 class Events extends StatefulWidget {
   @override

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hidden_drawer_menu/hidden_drawer/hidden_drawer_menu.dart';
 import 'package:hidden_drawer_menu/hidden_drawer/screen_hidden_drawer.dart';
-import 'package:inscritus/about_app/about.dart';
-import 'package:inscritus/home_screen.dart';
-import 'package:inscritus/qr_scanner/QRScanner.dart';
-import 'package:inscritus/map/map.dart';
-
-import 'authentication_bloc/authentication_bloc.dart';
+import 'package:inscritus/blocs/authentication_bloc/authentication_bloc.dart';
+import 'package:inscritus/views/about_app/about.dart';
+import 'package:inscritus/views/home/home_screen.dart';
+import 'package:inscritus/views/qr_scanner/QRScanner.dart';
+import 'package:inscritus/views/speakers/speakers_view.dart';
+import 'package:inscritus/views/map/map.dart';
 
 class InscritusApp extends StatefulWidget {
   final String email;
@@ -48,6 +48,14 @@ class _InscritusAppState extends State<InscritusApp> {
           colorLineSelected: Colors.orange,
         ),
         QRScanner()));
+
+    items.add(new ScreenHiddenDrawer(
+        new ItemHiddenMenu(
+          name: "Palestrantes",
+          baseStyle: TextStyle(color: Colors.black, fontSize: 28.0),
+          colorLineSelected: Colors.orange,
+        ),
+        SpeakersView()));
 
     items.add(new ScreenHiddenDrawer(
         new ItemHiddenMenu(

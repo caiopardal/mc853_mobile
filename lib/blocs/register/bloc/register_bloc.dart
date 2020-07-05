@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:inscritus/blocs/register/bloc/bloc.dart';
+import 'package:inscritus/helpers/validators.dart';
+import 'package:inscritus/repositories/user_repository.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
-
-import '../../user_repository.dart';
-import '../../validators.dart';
-import '../register.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final UserRepository _userRepository;

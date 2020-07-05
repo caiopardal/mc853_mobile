@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:inscritus/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:inscritus/inscritus_app.dart';
-import 'authentication_bloc/authentication_bloc.dart';
-import 'login/login_screen.dart';
-import 'simple_bloc_delegate.dart';
-import 'splash_screen.dart';
-import 'user_repository.dart';
+import 'package:inscritus/views/login/login.dart';
+import 'blocs/simple_bloc_delegate.dart';
+import 'views/splash_screen.dart';
+import 'repositories/user_repository.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

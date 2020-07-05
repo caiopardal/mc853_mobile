@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:inscritus/dashboard/announcement_card.dart';
 import 'package:inscritus/models/models.dart';
+import 'package:inscritus/views/dashboard/announcement_card.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -56,18 +56,31 @@ class DashboardState extends State<Dashboard> {
                 padding: EdgeInsets.symmetric(
                   horizontal: 10.0,
                 ),
-                child: SizedBox(
+                child: Container(
+                  width: double.infinity,
                   height: _height,
-                  child: ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.only(
-                      bottom: 25.0,
+                  child: SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.only(
+                            bottom: 25.0,
+                          ),
+                          itemCount: 7,
+                          itemBuilder: (context, index) {
+                            return AnnouncementCard(
+                                resource: Announcement.fromJson(announcements));
+                          },
+                        ),
+                        SizedBox(
+                          height: 80.0,
+                        ),
+                      ],
                     ),
-                    itemCount: 6,
-                    itemBuilder: (context, index) {
-                      return AnnouncementCard(
-                          resource: Announcement.fromJson(announcements));
-                    },
                   ),
                 ),
               ),

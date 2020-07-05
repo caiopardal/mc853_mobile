@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:inscritus/widgets/loading_indicator.dart';
-import 'package:inscritus/widgets/transparent_image.dart';
 import 'package:pinch_zoom_image_updated/pinch_zoom_image_updated.dart';
 
 class Map extends StatefulWidget {
