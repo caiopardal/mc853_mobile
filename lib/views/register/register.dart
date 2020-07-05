@@ -1,4 +1,4 @@
 export '../../blocs/register/bloc/bloc.dart';
-export './register_button.dart';
+export '../../widgets/register_button.dart';
 export './register_screen.dart';
-export './register_form.dart';
+export '../../widgets/register_form.dart';

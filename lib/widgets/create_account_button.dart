@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inscritus/repositories/user_repository.dart';
 
-import '../register/register_screen.dart';
+import '../views/register/register_screen.dart';
 
 class CreateAccountButton extends StatelessWidget {
   final UserRepository _userRepository;

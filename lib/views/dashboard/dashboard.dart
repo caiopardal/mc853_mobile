@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inscritus/models/announcement.dart';
 import 'package:inscritus/services/database.dart';
-import 'package:inscritus/views/dashboard/announcement_list.dart';
+import 'package:inscritus/widgets/announcement_list.dart';
 import 'package:provider/provider.dart';
 
 class Dashboard extends StatefulWidget {

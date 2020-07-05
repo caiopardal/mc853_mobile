@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inscritus/models/speaker.dart';
 import 'package:inscritus/services/database.dart';
-import 'package:inscritus/views/speakers/speakers_list.dart';
+import 'package:inscritus/widgets/speakers_list.dart';
 import 'package:provider/provider.dart';
 
 class SpeakersView extends StatefulWidget {

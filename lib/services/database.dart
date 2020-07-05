@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:inscritus/models/activity.dart';
 import 'package:inscritus/models/announcement.dart';
 import 'package:inscritus/models/speaker.dart';
 
@@ -9,16 +10,21 @@ class DatabaseService {
   // collection reference
   static final CollectionReference eventsCollection =
       Firestore.instance.collection('events');
+
   final CollectionReference speakersCollection =
       eventsCollection.document('1j2gFffXiROT5NLe0G5O').collection('speakers');
+
   final CollectionReference announcementsCollection = eventsCollection
       .document('1j2gFffXiROT5NLe0G5O')
       .collection('announcements');
 
+  final CollectionReference activitiesCollection = eventsCollection
+      .document('1j2gFffXiROT5NLe0G5O')
+      .collection('activities');
+
   // speakers list from snapshot
   List<Speaker> _speakerListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
-      //print(doc.data);
       return Speaker(
         name: doc.data['name'] ?? '',
         id: doc.data['id'] ?? '',
@@ -40,7 +46,6 @@ class DatabaseService {
   // announcement list from snapshot
   List<Announcement> _announcementListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
-      //print(doc.data);
       return Announcement(
         text: doc.data['text'] ?? '',
         id: doc.data['id'] ?? '',
@@ -55,5 +60,26 @@ class DatabaseService {
         .orderBy("createdAt", descending: true)
         .snapshots()
         .map(_announcementListFromSnapshot);
+  }
+
+  // activities list from snapshot
+  List<Activity> _activitiesListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.documents.map((doc) {
+      // print(doc.data);
+      return Activity(
+        name: doc.data['name'] ?? '',
+        id: doc.data['id'] ?? '',
+        local: doc.data['local'] ?? '',
+        description: doc.data['description'] ?? '',
+        speakers: List.from(doc.data['speakers']) ?? '',
+        time: doc.data['time'] ?? '',
+        mapImageName: doc.data['mapImageName'] ?? '',
+      );
+    }).toList();
+  }
+
+  // get activities stream
+  Stream<List<Activity>> get activities {
+    return activitiesCollection.snapshots().map(_activitiesListFromSnapshot);
   }
 }

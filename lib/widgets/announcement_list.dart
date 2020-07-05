@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inscritus/models/announcement.dart';
-import 'package:inscritus/views/dashboard/announcement_card.dart';
+import 'package:inscritus/widgets/announcement_card.dart';
 import 'package:provider/provider.dart';
 
 class AnnouncementList extends StatefulWidget {
