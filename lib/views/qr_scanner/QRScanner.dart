@@ -30,8 +30,6 @@ class _QRScannerState extends State<QRScanner> {
 
   @override
   Widget build(BuildContext context) {
-    print(_selectedLocation);
-
     return StreamProvider<List<Activity>>.value(
       value: DatabaseService().activities,
       child: Scaffold(

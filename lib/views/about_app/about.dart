@@ -12,10 +12,16 @@ class About extends StatelessWidget {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: ListView(
         children: <Widget>[
-          Center(
-            child: Image.asset(
-              'assets/flutter_logo.png',
-              height: 250.0,
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 30.0,
+              bottom: 25.0,
+            ),
+            child: Center(
+              child: Image.asset(
+                'assets/flutter_logo.png',
+                height: 180.0,
+              ),
             ),
           ),
           Container(

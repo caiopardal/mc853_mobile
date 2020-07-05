@@ -11,9 +11,6 @@ class SpeakersList extends StatefulWidget {
 }
 
 class _SpeakersListState extends State<SpeakersList> {
-  final List<String> entries = <String>['A', 'B', 'C'];
-  final List<int> colorCodes = <int>[600, 500, 100];
-
   Widget socialActions(context, Speaker speaker) => FittedBox(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -52,7 +49,6 @@ class _SpeakersListState extends State<SpeakersList> {
   @override
   Widget build(BuildContext context) {
     var _height = MediaQuery.of(context).size.height;
-
     final speakers = Provider.of<List<Speaker>>(context);
 
     if (speakers == null) {
@@ -92,11 +88,11 @@ class _SpeakersListState extends State<SpeakersList> {
                     children: <Widget>[
                       ConstrainedBox(
                         constraints: BoxConstraints.expand(
-                          height: MediaQuery.of(context).size.height * 0.3,
-                          width: MediaQuery.of(context).size.width * 0.3,
+                          height: MediaQuery.of(context).size.height * 0.25,
+                          width: MediaQuery.of(context).size.width * 0.35,
                         ),
-                        child: Image(
-                          image: AssetImage('assets/pardal.jpg'),
+                        child: Image.network(
+                          speakers[index].imageURL,
                         ),
                       ),
                       SizedBox(
@@ -112,9 +108,15 @@ class _SpeakersListState extends State<SpeakersList> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                Text(
-                                  speakers[index].name,
-                                  style: Theme.of(context).textTheme.headline6,
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                    top: 12,
+                                  ),
+                                  child: Text(
+                                    speakers[index].name,
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  ),
                                 ),
                                 SizedBox(
                                   height: 5,
