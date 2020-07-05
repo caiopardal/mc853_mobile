@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:inscritus/models/speaker.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flare_flutter/flare_actor.dart';
 
 class SpeakersList extends StatefulWidget {
   @override
@@ -53,6 +54,22 @@ class _SpeakersListState extends State<SpeakersList> {
     var _height = MediaQuery.of(context).size.height;
 
     final speakers = Provider.of<List<Speaker>>(context);
+
+    if (speakers == null) {
+      return Center(
+        child: Container(
+          color: Colors.transparent,
+          height: 400.0,
+          width: 400.0,
+          child: FlareActor(
+            'assets/flare/loading_indicator.flr',
+            alignment: Alignment.center,
+            fit: BoxFit.contain,
+            animation: "idle",
+          ),
+        ),
+      );
+    }
 
     return Container(
       width: double.infinity,

@@ -1,3 +1,4 @@
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:inscritus/models/announcement.dart';
 import 'package:inscritus/widgets/announcement_card.dart';
@@ -14,6 +15,22 @@ class AnnouncementListState extends State<AnnouncementList> {
     var _height = MediaQuery.of(context).size.height;
 
     final announcements = Provider.of<List<Announcement>>(context);
+
+    if (announcements == null) {
+      return Center(
+        child: Container(
+          color: Colors.transparent,
+          height: 400.0,
+          width: 400.0,
+          child: FlareActor(
+            'assets/flare/loading_indicator.flr',
+            alignment: Alignment.center,
+            fit: BoxFit.contain,
+            animation: "idle",
+          ),
+        ),
+      );
+    }
 
     return Container(
       width: double.infinity,

@@ -4,6 +4,7 @@ import 'package:inscritus/models/activity.dart';
 import 'package:intl/intl.dart';
 import 'package:pinch_zoom_image_updated/pinch_zoom_image_updated.dart';
 import 'package:provider/provider.dart';
+import 'package:flare_flutter/flare_actor.dart';
 
 class ActivityCard extends StatefulWidget {
   ActivityCard({
@@ -218,6 +219,22 @@ class ActivitiesForDay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final activities = Provider.of<List<Activity>>(context);
+
+    if (activities == null) {
+      return Center(
+        child: Container(
+          color: Colors.transparent,
+          height: 400.0,
+          width: 400.0,
+          child: FlareActor(
+            'assets/flare/loading_indicator.flr',
+            alignment: Alignment.center,
+            fit: BoxFit.contain,
+            animation: "idle",
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
