@@ -3,15 +3,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inscritus/models/activity.dart';
 import 'package:inscritus/services/database.dart';
-import 'package:inscritus/widgets/events_for_day.dart';
+import 'package:inscritus/widgets/activities_for_day.dart';
 import 'package:provider/provider.dart';
 
-class Events extends StatefulWidget {
+class Activities extends StatefulWidget {
   @override
-  EventsState createState() => EventsState();
+  ActivitiesState createState() => ActivitiesState();
 }
 
-class EventsState extends State<Events> with SingleTickerProviderStateMixin {
+class ActivitiesState extends State<Activities>
+    with SingleTickerProviderStateMixin {
   TabController controller;
 
   @override
@@ -68,10 +69,10 @@ class EventsState extends State<Events> with SingleTickerProviderStateMixin {
           automaticallyImplyLeading: false,
         ),
         body: getTabBarView(<Widget>[
-          EventsForDay(
+          ActivitiesForDay(
             day: '5',
           ),
-          EventsForDay(
+          ActivitiesForDay(
             day: '6',
           ),
         ]),

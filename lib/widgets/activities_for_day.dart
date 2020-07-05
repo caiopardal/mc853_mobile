@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:pinch_zoom_image_updated/pinch_zoom_image_updated.dart';
 import 'package:provider/provider.dart';
 
-class EventCard extends StatefulWidget {
-  EventCard({
+class ActivityCard extends StatefulWidget {
+  ActivityCard({
     @required this.resource,
     @required this.day,
   });
@@ -15,10 +15,10 @@ class EventCard extends StatefulWidget {
   final String day;
 
   @override
-  _EventCardState createState() => _EventCardState();
+  _ActivityCardState createState() => _ActivityCardState();
 }
 
-class _EventCardState extends State<EventCard> {
+class _ActivityCardState extends State<ActivityCard> {
   bool isExpanded = false;
 
   Widget build(BuildContext context) {
@@ -207,10 +207,10 @@ class _EventCardState extends State<EventCard> {
   }
 }
 
-class EventsForDay extends StatelessWidget {
+class ActivitiesForDay extends StatelessWidget {
   final String day;
 
-  EventsForDay({
+  ActivitiesForDay({
     Key key,
     @required this.day,
   }) : super(key: key);
@@ -226,7 +226,7 @@ class EventsForDay extends StatelessWidget {
           padding: EdgeInsets.all(15.0),
           itemCount: activities == null ? 1 : activities.length,
           itemBuilder: (BuildContext context, int index) {
-            return EventCard(
+            return ActivityCard(
               resource: activities[index],
               day: this.day,
             );

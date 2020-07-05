@@ -4,8 +4,8 @@ import 'package:groovin_material_icons/groovin_material_icons.dart';
 import 'package:hidden_drawer_menu/hidden_drawer/screen_hidden_drawer.dart';
 import 'package:hidden_drawer_menu/menu/item_hidden_menu.dart';
 import 'package:inscritus/views/about_app/about.dart';
+import 'package:inscritus/views/activities/activities.dart';
 import 'package:inscritus/views/dashboard/dashboard.dart';
-import 'package:inscritus/views/events/events.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -35,11 +35,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     items.add(new ScreenHiddenDrawer(
         new ItemHiddenMenu(
-          name: "Events",
+          name: "Activities",
           baseStyle: TextStyle(color: Colors.black, fontSize: 28.0),
           colorLineSelected: Colors.orange,
         ),
-        Events()));
+        Activities()));
     super.initState();
   }
 
@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   final _bottomNavPages = <Widget>[
     // About(),
     Dashboard(),
-    Events(),
+    Activities(),
   ];
 
   ///===========================================================
@@ -124,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           : Colors.black,
                     ),
                     Text(
-                      'Eventos',
+                      'Atividades',
                       style: TextStyle(
                         fontSize: _currentBottomNavItemIndex == 1 ? 14.0 : 12.0,
                         color: _currentBottomNavItemIndex == 1
