@@ -14,7 +14,7 @@ class About extends StatelessWidget {
         children: <Widget>[
           Center(
             child: Image.asset(
-              'assets/batman.jpg',
+              'assets/flutter_logo.png',
               height: 250.0,
             ),
           ),

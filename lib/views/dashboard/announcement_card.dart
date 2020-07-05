@@ -1,23 +1,24 @@
-import 'package:inscritus/models/models.dart';
+import 'package:inscritus/helpers/utils.dart';
+import 'package:inscritus/models/announcement.dart';
 import 'package:inscritus/models/string_parser.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class AnnouncementCard extends StatelessWidget {
   AnnouncementCard({@required this.resource});
   final Announcement resource;
 
   Widget build(BuildContext context) {
-    String secs = resource.ts.split(".")[0];
-    var timeStr =
-        DateTime.fromMillisecondsSinceEpoch(int.parse(secs) * 1000).toLocal();
-    var formattedTime = new DateFormat('hh:mm a').format(timeStr);
+    var convertedTime =
+        DateTime.parse(resource.createdAt.toDate().toString()).toString();
+    var date = dateFormat(convertedTime.substring(0, 10));
+    var time = timeFormat(convertedTime.substring(11, 16));
+    var formattedTime = date + ' ' + time;
 
-    return new Container(
-      key: Key(resource.ts),
-      child: new Card(
+    return Container(
+      key: Key(resource.id),
+      child: Card(
         elevation: 0.0,
         color: Theme.of(context).dividerColor,
         shape: RoundedRectangleBorder(
@@ -36,8 +37,13 @@ class AnnouncementCard extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                subtitle: StringParser(
-                  text: resource.text ?? '',
+                subtitle: Padding(
+                  padding: const EdgeInsets.only(
+                    top: 12.0,
+                  ),
+                  child: StringParser(
+                    text: resource.text ?? '',
+                  ),
                 ),
               ),
             ],

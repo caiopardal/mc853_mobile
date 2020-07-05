@@ -1,27 +1,3 @@
-import 'dart:convert';
-
-/// Announcement Resource
-///
-/// @param text announcement description
-/// @param ts time stamp when an announcement was made
-
-class Announcement {
-  final String text;
-  final String ts;
-
-  Announcement({this.text, this.ts});
-
-  @override
-  String toString() {
-    return '{"text": ${json.encode(this.text)}' +
-        ',"ts": ${json.encode(this.ts)}}';
-  }
-
-  Announcement.fromJson(Map<String, dynamic> json)
-      : text = json["text"],
-        ts = json['ts'];
-}
-
 /// Day-Of Event Resource
 ///
 /// @param summary event name
