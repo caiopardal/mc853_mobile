@@ -27,3 +27,10 @@ String dateFormat(String date) {
 
   return day + ' ' + monthNames[month - 1] + ' ' + year;
 }
+
+bool isEmailAddress(String input) {
+  final matcher = new RegExp(
+    r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$',
+  );
+  return matcher.hasMatch(input);
+}

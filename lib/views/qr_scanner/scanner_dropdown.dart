@@ -47,7 +47,7 @@ class _ScannerDropdownState extends State<ScannerDropdown> {
         items: activities.map((activity) {
           return DropdownMenuItem(
             child: new Text(activity.name),
-            value: activity.name,
+            value: activity.name + '-' + activity.id,
           );
         }).toList(),
       ),

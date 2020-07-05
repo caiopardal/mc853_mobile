@@ -82,4 +82,41 @@ class DatabaseService {
   Stream<List<Activity>> get activities {
     return activitiesCollection.snapshots().map(_activitiesListFromSnapshot);
   }
+
+  static Future<bool> checkIfEmailIsAlreadyConfirmed(
+      String docID, String email) async {
+    bool exists = false;
+    try {
+      await Firestore.instance
+          .document("events/1j2gFffXiROT5NLe0G5O/activities/$docID")
+          .get()
+          .then((doc) {
+        print(doc.data);
+        if (doc.data['confirmations'] != null) {
+          var confirmedList = List.from(doc.data['confirmations']);
+
+          if (confirmedList.contains(email)) {
+            exists = true;
+          } else {
+            exists = false;
+          }
+        }
+      });
+      return exists;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  static Future<void> registerANewEmail(String docID, String email) async {
+    List emails = [];
+    emails.add(email);
+    try {
+      await Firestore.instance
+          .document("events/1j2gFffXiROT5NLe0G5O/activities/$docID")
+          .updateData({"confirmations": FieldValue.arrayUnion(emails)});
+    } catch (e) {
+      return false;
+    }
+  }
 }

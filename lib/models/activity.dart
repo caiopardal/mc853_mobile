@@ -7,6 +7,7 @@ class Activity {
   String description;
   String mapImageName;
   List<String> speakers;
+  List<String> confirmations;
   Timestamp time;
 
   Activity({
@@ -17,5 +18,6 @@ class Activity {
     this.description,
     this.speakers,
     this.time,
+    this.confirmations,
   });
 }

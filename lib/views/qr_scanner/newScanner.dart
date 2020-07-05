@@ -1,14 +1,18 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
+import 'package:inscritus/helpers/utils.dart';
+import 'package:inscritus/services/database.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qr_code_scanner/qr_scanner_overlay_shape.dart';
 
 class NewScanner extends StatefulWidget {
   final String eventName;
+  final String eventID;
 
   NewScanner({
     this.eventName,
+    this.eventID,
   });
 
   @override
@@ -23,14 +27,12 @@ class _NewScannerState extends State<NewScanner>
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   AnimationController _animationController;
   bool isPlaying = false;
-  Future<String> _message;
 
   @override
   void initState() {
     super.initState();
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-    _message = Future<String>.sync(() => ' ');
   }
 
   @override
@@ -107,7 +109,7 @@ class _NewScannerState extends State<NewScanner>
   }
 
   void _onQRViewCreated(QRViewController controller) {
-    var prevQR = 'xxx@xxx.com';
+    var prevQR = 'xxx@xxx.com.br';
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
       setState(() {
@@ -117,7 +119,7 @@ class _NewScannerState extends State<NewScanner>
           scanned = "";
           _qrRequest(scanData);
         } else {
-//          scanned = "ALREADY SCANNED!";
+          scanned = "O e-mail lido é o mesmo escaneado anteriormente!";
         }
       });
     });
@@ -137,12 +139,22 @@ class _NewScannerState extends State<NewScanner>
   }
 
   void _qrRequest(String scanData) async {
+    var checkIfItIsAEmailAddress = isEmailAddress(scanData);
     var message;
-    // message = await <Request to scan data>;
-    if (message == "SCANNED!" || message == "EMAIL SCANNED!") {
-      _scanDialogSuccess(message);
+
+    if (checkIfItIsAEmailAddress) {
+      bool exists = await DatabaseService.checkIfEmailIsAlreadyConfirmed(
+          widget.eventID, scanData);
+      if (!exists) {
+        message = "E-mail confirmado na atividade com sucesso!";
+        await DatabaseService.registerANewEmail(widget.eventID, scanData);
+        _scanDialogSuccess(message);
+      } else {
+        message = "E-mail já confirmado anteriormente!";
+        _scanDialogWarning(message);
+      }
     } else {
-      _scanDialogWarning(message);
+      _scanDialogWarning("O QR Code escaneado não apresenta um e-mail");
     }
   }
 
@@ -151,7 +163,7 @@ class _NewScannerState extends State<NewScanner>
       context: context,
       builder: (BuildContext context, {barrierDismissible: false}) {
         return new AlertDialog(
-          backgroundColor: Color(0xFFC85151),
+          backgroundColor: Color(0xFF228B22),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
@@ -210,7 +222,7 @@ class _NewScannerState extends State<NewScanner>
               textAlign: TextAlign.center),
           actions: <Widget>[
             FlatButton(
-              child: Text('CANCEL',
+              child: Text('CANCELAR',
                   style: TextStyle(fontSize: 20, color: Color(0xFF592323)),
                   textAlign: TextAlign.center),
               padding: const EdgeInsets.all(15.0),
@@ -243,12 +255,5 @@ class _NewScannerState extends State<NewScanner>
         );
       },
     );
-  }
-
-  bool _isEmailAddress(String input) {
-    final matcher = new RegExp(
-      r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$',
-    );
-    return matcher.hasMatch(input);
   }
 }

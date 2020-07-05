@@ -18,16 +18,20 @@ class QRScanner extends StatefulWidget {
 class _QRScannerState extends State<QRScanner> {
   var _isVisible = false;
   String _selectedLocation;
+  String _locationID;
 
   void onChange(String newValue) {
     setState(() {
       _selectedLocation = newValue;
+      _locationID = newValue.split('-')[1];
       _isVisible = true;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    print(_selectedLocation);
+
     return StreamProvider<List<Activity>>.value(
       value: DatabaseService().activities,
       child: Scaffold(
@@ -89,8 +93,10 @@ class _QRScannerState extends State<QRScanner> {
                   onPressed: () async {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) =>
-                            NewScanner(eventName: _selectedLocation),
+                        builder: (context) => NewScanner(
+                          eventName: _selectedLocation.split('-')[0],
+                          eventID: _locationID,
+                        ),
                       ),
                     );
                   },
