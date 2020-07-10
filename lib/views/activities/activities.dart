@@ -34,15 +34,12 @@ class ActivitiesState extends State<Activities>
       ],
       indicator: BoxDecoration(
         borderRadius: BorderRadius.circular(30.0),
-        color: Theme.of(context).accentColor,
+        color: Color(0xFF97DCFC),
       ),
       indicatorWeight: 2.0,
       indicatorSize: TabBarIndicatorSize.tab,
       controller: controller,
-      unselectedLabelColor:
-          MediaQuery.of(context).platformBrightness == Brightness.light
-              ? Color(0xFF1E90FF)
-              : Colors.white,
+      unselectedLabelColor: Colors.black,
       labelColor: Colors.black,
       labelStyle: TextStyle(
         fontWeight: FontWeight.w600,
@@ -63,7 +60,7 @@ class ActivitiesState extends State<Activities>
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           title: getTabBar(),
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Color(0xFFE1F5FE),
           elevation: 0.0,
           automaticallyImplyLeading: false,
         ),

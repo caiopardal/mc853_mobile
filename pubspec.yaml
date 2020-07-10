@@ -16,7 +16,7 @@ dependencies:
   equatable: ^1.1.1
   meta: ^1.1.6
   rxdart: ^0.23.1
-  pinch_zoom_image_updated: ^0.2.6
+  pinch_zoom_image_last: ^0.3.1
   font_awesome_flutter: ^8.4.0
   hidden_drawer_menu: ^1.1.2
   qr_flutter: ^3.2.0

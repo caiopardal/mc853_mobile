@@ -20,7 +20,7 @@ class AnnouncementCard extends StatelessWidget {
       key: Key(resource.id),
       child: Card(
         elevation: 0.0,
-        color: Theme.of(context).dividerColor,
+        color: Color(0xFFE1F5FE),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),

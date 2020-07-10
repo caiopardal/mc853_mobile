@@ -452,13 +452,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.9.0"
-  pinch_zoom_image_updated:
+  pinch_zoom_image_last:
     dependency: "direct main"
     description:
-      name: pinch_zoom_image_updated
+      name: pinch_zoom_image_last
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.6"
+    version: "0.3.1"
   plugin_platform_interface:
     dependency: transitive
     description:

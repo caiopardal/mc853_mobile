@@ -1,45 +1,19 @@
 class Speaker {
   String id;
   String name;
-  String activity;
-  String description;
+  List<String> activities;
+  String shortBio;
+  String bio;
   String imageURL;
-  String facebookURL;
-  String githubURL;
-  String linkedinURL;
+  Map<String, String> social;
 
   Speaker({
     this.name,
     this.id,
-    this.activity,
-    this.description,
-    this.facebookURL,
-    this.githubURL,
+    this.activities,
+    this.shortBio,
+    this.bio,
+    this.social,
     this.imageURL,
-    this.linkedinURL,
   });
-
-  Speaker.fromMap(Map<String, dynamic> data) {
-    id = data['id'];
-    name = data['name'];
-    activity = data['activity'];
-    description = data['description'];
-    imageURL = data['imageURL'];
-    facebookURL = data['facebookURL'];
-    githubURL = data['githubURL'];
-    linkedinURL = data['linkedinURL'];
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'name': name,
-      'activity': activity,
-      'description': description,
-      'imageURL': imageURL,
-      'facebookURL': facebookURL,
-      'githubURL': githubURL,
-      'linkedinURL': linkedinURL,
-    };
-  }
 }

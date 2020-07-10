@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           : Colors.black,
                     ),
                     Text(
-                      'Dashboard',
+                      'Início',
                       style: TextStyle(
                         fontSize: _currentBottomNavItemIndex == 0 ? 14.0 : 12.0,
                         color: _currentBottomNavItemIndex == 0

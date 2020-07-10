@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:groovin_material_icons/groovin_material_icons.dart';
 import 'package:inscritus/helpers/utils.dart';
 import 'package:inscritus/models/activity.dart';
 import 'package:intl/intl.dart';
-import 'package:pinch_zoom_image_updated/pinch_zoom_image_updated.dart';
+import 'package:pinch_zoom_image_last/pinch_zoom_image_last.dart';
 import 'package:provider/provider.dart';
 import 'package:flare_flutter/flare_actor.dart';
 
@@ -40,44 +41,59 @@ class _ActivityCardState extends State<ActivityCard> {
             borderRadius: BorderRadius.circular(10.0),
           ),
           elevation: 0.0,
-          color: (isExpanded)
-              ? Theme.of(context).primaryColor
-              : Theme.of(context).dividerColor,
+          color: (isExpanded) ? Color(0xFFE1F5FE) : Color(0xFF97DCFC),
           child: ExpansionTile(
             onExpansionChanged: (bool expanding) =>
                 setState(() => this.isExpanded = expanding),
-            leading: new Text(
-              time ?? '',
-              textAlign: TextAlign.center,
-              style: new TextStyle(
-                color: isExpanded
-                    ? (_brightnessValue == Brightness.light
-                        ? Colors.yellow.shade500
-                        : Color(0xFF1E90FF))
-                    : Theme.of(context).primaryColor,
-                textBaseline: TextBaseline.alphabetic,
-                fontSize: 20.0,
-                fontWeight: FontWeight.w700,
-              ),
+            leading: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 6.0,
+                    bottom: 6.0,
+                  ),
+                  child: Icon(
+                    GroovinMaterialIcons.calendar_clock,
+                    size: 24.0,
+                    color: isExpanded
+                        ? Theme.of(context).primaryColorDark
+                        : Colors.black,
+                  ),
+                ),
+                new Text(
+                  time ?? '',
+                  textAlign: TextAlign.center,
+                  style: new TextStyle(
+                    color: isExpanded
+                        ? (_brightnessValue == Brightness.light
+                            ? Color(0xFF1E90FF)
+                            : Colors.white)
+                        : Colors.black,
+                    textBaseline: TextBaseline.alphabetic,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
             ),
             trailing: Icon(
-              isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+              isExpanded ? Icons.star_border : Icons.star,
               color: isExpanded
-                  ? Colors.white
+                  ? Theme.of(context).primaryColorDark
                   : (_brightnessValue == Brightness.light
-                      ? Color(0xFF1E90FF)
-                      : Colors.white),
-              size: 35.0,
+                      ? Colors.black
+                      : Theme.of(context).primaryColorDark),
+              size: 30.0,
             ),
             title: Text(
               widget?.resource?.name ?? '',
               style: TextStyle(
                 color: isExpanded
-                    ? Colors.white
+                    ? Theme.of(context).primaryColorDark
                     : (_brightnessValue == Brightness.light
-                        ? Color(0xFF1E90FF)
-                        : Colors.white),
-                fontSize: 20.0,
+                        ? Colors.black
+                        : Theme.of(context).primaryColorDark),
+                fontSize: 16.0,
                 fontWeight: FontWeight.w700,
               ),
               textAlign: TextAlign.center,
@@ -103,7 +119,7 @@ class _ActivityCardState extends State<ActivityCard> {
                             "Local: ",
                             style: TextStyle(
                               fontSize: 18,
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorDark,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -134,7 +150,7 @@ class _ActivityCardState extends State<ActivityCard> {
                             "Descrição: ",
                             style: TextStyle(
                               fontSize: 18,
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorDark,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.start,
@@ -167,7 +183,7 @@ class _ActivityCardState extends State<ActivityCard> {
                             "Palestrante(s): ",
                             style: TextStyle(
                               fontSize: 18,
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColorDark,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

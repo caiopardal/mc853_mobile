@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:inscritus/models/activity.dart';
 import 'package:inscritus/models/speaker.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -11,37 +12,56 @@ class SpeakersList extends StatefulWidget {
 }
 
 class _SpeakersListState extends State<SpeakersList> {
+  List<Activity> activities;
+
   Widget socialActions(context, Speaker speaker) => FittedBox(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            IconButton(
-              icon: Icon(
-                FontAwesomeIcons.facebookF,
-                size: 15,
+            if (speaker.social['facebook'] != null &&
+                speaker.social['facebook'] != '')
+              IconButton(
+                icon: Icon(
+                  FontAwesomeIcons.facebookF,
+                  size: 15,
+                ),
+                onPressed: () {
+                  launch(speaker.social['facebook']);
+                },
               ),
-              onPressed: () {
-                launch(speaker.facebookURL);
-              },
-            ),
-            IconButton(
-              icon: Icon(
-                FontAwesomeIcons.linkedinIn,
-                size: 15,
+            if (speaker.social['linkedIn'] != null &&
+                speaker.social['linkedIn'] != '')
+              IconButton(
+                icon: Icon(
+                  FontAwesomeIcons.linkedinIn,
+                  size: 15,
+                ),
+                onPressed: () {
+                  launch(speaker.social['linkedIn']);
+                },
               ),
-              onPressed: () {
-                launch(speaker.linkedinURL);
-              },
-            ),
-            IconButton(
-              icon: Icon(
-                FontAwesomeIcons.github,
-                size: 15,
+            if (speaker.social['github'] != null &&
+                speaker.social['github'] != '')
+              IconButton(
+                icon: Icon(
+                  FontAwesomeIcons.github,
+                  size: 15,
+                ),
+                onPressed: () {
+                  launch(speaker.social['github']);
+                },
               ),
-              onPressed: () {
-                launch(speaker.githubURL);
-              },
-            ),
+            if (speaker.social['twitter'] != null &&
+                speaker.social['twitter'] != '')
+              IconButton(
+                icon: Icon(
+                  FontAwesomeIcons.twitter,
+                  size: 15,
+                ),
+                onPressed: () {
+                  launch(speaker.social['twitter']);
+                },
+              ),
           ],
         ),
       );
@@ -84,7 +104,7 @@ class _SpeakersListState extends State<SpeakersList> {
                 return Card(
                   elevation: 0.0,
                   child: Row(
-                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       ConstrainedBox(
                         constraints: BoxConstraints.expand(
@@ -134,14 +154,14 @@ class _SpeakersListState extends State<SpeakersList> {
                               height: 10,
                             ),
                             Text(
-                              speakers[index].description,
+                              speakers[index].shortBio,
                               style: Theme.of(context).textTheme.subtitle1,
                             ),
                             SizedBox(
                               height: 10,
                             ),
                             Text(
-                              speakers[index].activity,
+                              speakers[index].bio.substring(0, 120) + ' ...',
                               style: Theme.of(context).textTheme.caption,
                             ),
                             socialActions(context, speakers[index]),

@@ -147,7 +147,8 @@ class _NewScannerState extends State<NewScanner>
           widget.eventID, scanData);
       if (!exists) {
         message = "E-mail confirmado na atividade com sucesso!";
-        await DatabaseService.registerANewEmail(widget.eventID, scanData);
+        await DatabaseService.confirmAnEmailToActivity(
+            widget.eventID, scanData);
         _scanDialogSuccess(message);
       } else {
         message = "E-mail já confirmado anteriormente!";

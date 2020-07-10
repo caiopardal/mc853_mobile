@@ -43,7 +43,7 @@ class DashboardState extends State<Dashboard> {
                     horizontal: 10.0,
                   ),
                   child: Text(
-                    'Anúncios',
+                    'Mural de notícias',
                     style: TextStyle(
                       fontSize: 25.0,
                       color: Colors.black,
