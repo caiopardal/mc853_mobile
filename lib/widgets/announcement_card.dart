@@ -11,7 +11,7 @@ class AnnouncementCard extends StatelessWidget {
 
   Widget build(BuildContext context) {
     var convertedTime =
-        DateTime.parse(resource.createdAt.toDate().toString()).toString();
+        DateTime.parse(resource.lastUpdate.toDate().toString()).toString();
     var date = dateFormat(convertedTime.substring(0, 10));
     var time = timeFormat(convertedTime.substring(11, 16));
     var formattedTime = date + ' ' + time;
@@ -42,7 +42,7 @@ class AnnouncementCard extends StatelessWidget {
                     top: 12.0,
                   ),
                   child: StringParser(
-                    text: resource.text ?? '',
+                    text: resource.message ?? '',
                   ),
                 ),
               ),

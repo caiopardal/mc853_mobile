@@ -15,8 +15,8 @@ class DatabaseService {
   final CollectionReference speakersCollection =
       Firestore.instance.collection('speakers');
 
-  final CollectionReference announcementsCollection =
-      Firestore.instance.collection('announcements');
+  final CollectionReference feedCollection =
+      Firestore.instance.collection('feed');
 
   final CollectionReference activitiesCollection =
       Firestore.instance.collection('activities');
@@ -45,17 +45,20 @@ class DatabaseService {
   List<Announcement> _announcementListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
       return Announcement(
-        text: doc.data['text'] ?? '',
+        message: doc.data['message'] ?? '',
+        title: doc.data['title'] ?? '',
         id: doc.data['id'] ?? '',
-        createdAt: doc.data['createdAt'] ?? '',
+        postedAt: doc.data['postedAt'] ?? '',
+        lastUpdate: doc.data['lastUpdate'] ?? '',
+        publisher: Map<String, String>.from(doc.data['publisher']) ?? '',
       );
     }).toList();
   }
 
   // get announcements stream
   Stream<List<Announcement>> get announcements {
-    return announcementsCollection
-        .orderBy("createdAt", descending: true)
+    return feedCollection
+        .orderBy("lastUpdate", descending: true)
         .snapshots()
         .map(_announcementListFromSnapshot);
   }
