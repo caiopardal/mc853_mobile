@@ -24,6 +24,7 @@ class DatabaseService {
   // speakers list from snapshot
   List<Speaker> _speakerListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
+      print(doc.data);
       return Speaker(
         name: doc.data['name'] ?? '',
         id: doc.data['id'] ?? '',
