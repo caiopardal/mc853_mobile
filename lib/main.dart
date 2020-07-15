@@ -39,7 +39,10 @@ class Inscritus extends StatelessWidget {
             return LoginScreen(userRepository: _userRepository);
           }
           if (state is Authenticated) {
-            return InscritusApp(email: state.displayName);
+            return InscritusApp(
+              email: state.user.email,
+              uid: state.user.uid,
+            );
           }
           return SplashScreen();
         },

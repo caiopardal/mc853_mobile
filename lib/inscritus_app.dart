@@ -11,9 +11,11 @@ import 'package:inscritus/views/map/map.dart';
 
 class InscritusApp extends StatefulWidget {
   final String email;
+  final String uid;
 
   InscritusApp({
     this.email,
+    this.uid,
   });
 
   @override
@@ -31,7 +33,10 @@ class _InscritusAppState extends State<InscritusApp> {
           baseStyle: TextStyle(color: Colors.black, fontSize: 28.0),
           colorLineSelected: Colors.orange,
         ),
-        HomeScreen(email: widget.email)));
+        HomeScreen(
+          email: widget.email,
+          uid: widget.uid,
+        )));
 
     items.add(new ScreenHiddenDrawer(
         new ItemHiddenMenu(

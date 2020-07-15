@@ -10,9 +10,14 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   final String email;
+  final String uid;
   static String routeName = '/home';
 
-  HomeScreen({Key key, @required this.email}) : super(key: key);
+  HomeScreen({
+    Key key,
+    @required this.email,
+    @required this.uid,
+  }) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -39,18 +44,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           baseStyle: TextStyle(color: Colors.black, fontSize: 28.0),
           colorLineSelected: Colors.orange,
         ),
-        Activities()));
+        Activities(
+          uid: widget.uid,
+        )));
     super.initState();
   }
-
-  ///===========================================================
-  ///                     BOTTOM NAV PAGES
-  ///===========================================================
-  final _bottomNavPages = <Widget>[
-    // About(),
-    Dashboard(),
-    Activities(),
-  ];
 
   ///===========================================================
   ///                      BOTTOM APP BAR
@@ -189,6 +187,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final _bottomNavPages = <Widget>[
+      // About(),
+      Dashboard(),
+      Activities(
+        uid: widget.uid,
+      ),
+    ];
+
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomPadding: false,

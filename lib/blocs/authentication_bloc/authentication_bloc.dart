@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:inscritus/repositories/user_repository.dart';
 import 'package:meta/meta.dart';
 
@@ -34,8 +35,8 @@ class AuthenticationBloc
   Stream<AuthenticationState> _mapAppStartedToState() async* {
     final isSignedIn = await _userRepository.isSignedIn();
     if (isSignedIn) {
-      final name = await _userRepository.getUser();
-      yield Authenticated(name);
+      final user = await _userRepository.getUser();
+      yield Authenticated(user);
     } else {
       yield Unauthenticated();
     }

@@ -12,10 +12,12 @@ class ActivityCard extends StatefulWidget {
   ActivityCard({
     @required this.resource,
     @required this.day,
+    this.isFavoritesScreen = false,
   });
 
   final Activity resource;
   final String day;
+  final bool isFavoritesScreen;
 
   @override
   _ActivityCardState createState() => _ActivityCardState();
@@ -33,7 +35,9 @@ class _ActivityCardState extends State<ActivityCard> {
         DateTime.parse(widget.resource.time.toDate().toString()).toString();
     var time = timeFormat(convertedTime.substring(11, 16));
 
-    if (eventDay == widget.day || eventDay == today) {
+    if (eventDay == widget.day ||
+        eventDay == today ||
+        widget.isFavoritesScreen) {
       return Container(
         child: Card(
           shape: RoundedRectangleBorder(

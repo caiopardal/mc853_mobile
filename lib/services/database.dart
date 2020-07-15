@@ -142,13 +142,14 @@ class DatabaseService {
 
   static Future<List<Activity>> getActivitiesByIds(List<String> docsIDs) async {
     try {
-      List<Activity> activities;
+      List<Activity> activities = [];
       docsIDs.forEach((id) async {
         var activity = await getActivityById(id);
         activities.add(activity);
       });
       return activities;
     } catch (e) {
+      print(e);
       return null;
     }
   }
@@ -170,6 +171,32 @@ class DatabaseService {
       });
 
       return activity;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  static Future<User> getUserById(String docID) async {
+    try {
+      User user;
+
+      await Firestore.instance.document("users/$docID").get().then((doc) {
+        user = User(
+          name: doc.data['name'] ?? '',
+          uid: doc.data['uid'] ?? '',
+          cpf: doc.data['cpf'] ?? '',
+          email: doc.data['email'] ?? '',
+          phone: doc.data['phone'] ?? '',
+          createdAt: doc.data['createdAt'] ?? '',
+          lastUpdate: doc.data['lastUpdate'] ?? '',
+          isActive: doc.data['isActive'] ?? false,
+          isAdmin: doc.data['isAdmin'] ?? false,
+          emailVerified: doc.data['emailVerified'] ?? false,
+        );
+      });
+
+      return user;
     } catch (e) {
       return null;
     }
@@ -196,6 +223,25 @@ class DatabaseService {
       }
 
       return speakers;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<List<String>> getUserActivitiesIds(String docID) async {
+    try {
+      List<String> ids = [];
+
+      QuerySnapshot querySnapshot = await Firestore.instance
+          .document("users/$docID")
+          .collection("activities")
+          .getDocuments();
+      for (int i = 0; i < querySnapshot.documents.length; i++) {
+        var doc = querySnapshot.documents[i];
+        ids.add(doc.documentID);
+      }
+
+      return ids;
     } catch (e) {
       return null;
     }
