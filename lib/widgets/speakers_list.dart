@@ -14,7 +14,6 @@ class _SpeakersListState extends State<SpeakersList> {
   Widget build(BuildContext context) {
     var _height = MediaQuery.of(context).size.height;
     final speakers = Provider.of<List<Speaker>>(context);
-    print(speakers);
 
     if (speakers == null) {
       return Center(

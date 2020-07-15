@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inscritus/models/activity.dart';
+import 'package:inscritus/models/speaker.dart';
 import 'package:inscritus/services/database.dart';
 import 'package:inscritus/widgets/activities_for_day.dart';
 import 'package:provider/provider.dart';
@@ -13,11 +14,18 @@ class Activities extends StatefulWidget {
 class ActivitiesState extends State<Activities>
     with SingleTickerProviderStateMixin {
   TabController controller;
+  List<Speaker> speakers;
 
   @override
   void initState() {
     super.initState();
     controller = new TabController(length: 2, vsync: this);
+
+    DatabaseService.getSpeakers().then((value) {
+      setState(() {
+        speakers = value;
+      });
+    });
   }
 
   @override
@@ -67,9 +75,11 @@ class ActivitiesState extends State<Activities>
         body: getTabBarView(<Widget>[
           ActivitiesForDay(
             day: '5',
+            speakers: speakers,
           ),
           ActivitiesForDay(
             day: '6',
+            speakers: speakers,
           ),
         ]),
       ),

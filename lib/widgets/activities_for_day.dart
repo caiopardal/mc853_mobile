@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
 import 'package:inscritus/helpers/utils.dart';
 import 'package:inscritus/models/activity.dart';
+import 'package:inscritus/models/speaker.dart';
 import 'package:inscritus/widgets/activity_detail.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -110,11 +111,28 @@ class _ActivityCardState extends State<ActivityCard> {
 
 class ActivitiesForDay extends StatelessWidget {
   final String day;
+  final List<Speaker> speakers;
 
   ActivitiesForDay({
     Key key,
     @required this.day,
+    @required this.speakers,
   }) : super(key: key);
+
+  List<Speaker> filterSpeakers(List<Speaker> speakers, Activity activity) {
+    List<Speaker> newSpeakers = [];
+    bool isACorrectSpeaker = false;
+    for (int i = 0; i < speakers.length; i++) {
+      for (int j = 0; j < speakers[i].activities.length; j++) {
+        if (speakers[i].activities[j] == activity.id) {
+          isACorrectSpeaker = true;
+        }
+      }
+      if (isACorrectSpeaker) newSpeakers.add(speakers[i]);
+    }
+
+    return newSpeakers;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -149,6 +167,7 @@ class ActivitiesForDay extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => ActivityDetail(
                       activity: activities[index],
+                      speakers: filterSpeakers(speakers, activities[index]),
                     ),
                   ),
                 );

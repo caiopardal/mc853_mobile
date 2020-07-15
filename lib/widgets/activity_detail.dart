@@ -6,9 +6,11 @@ import 'package:pinch_zoom_image_last/pinch_zoom_image_last.dart';
 
 class ActivityDetail extends StatefulWidget {
   final Activity activity;
+  final List<Speaker> speakers;
 
   ActivityDetail({
     this.activity,
+    this.speakers,
   });
 
   @override
@@ -20,25 +22,6 @@ class _ActivityDetailState extends State<ActivityDetail> {
   Widget build(BuildContext context) {
     var _width = MediaQuery.of(context).size.width;
     var _height = MediaQuery.of(context).size.height;
-
-    Speaker speaker = Speaker(
-      bio:
-          "Meu nome é Caio Pardal. Tenho 21 anos de idade e sou natural de Guarulhos-SP. Atualmente, sou estudante de Engenharia de Computação na Universidade Estadual de Campinas e trabalho como Engenheiro de software na empresa DieselBank. Sou fascinado por tecnologia e inovação e acredito que no mundo atual, inovar e criar novas tecnologias são essenciais para o progresso da sociedade.",
-      id: "fQri5oOhNjjm2abCnthe",
-      imageURL:
-          "https://avatars0.githubusercontent.com/u/43478950?s=460&u=75afd3ecf41a7c628d5b6a620aa6706c0307c849&v=4",
-      name: "Caio Pardal",
-      shortBio: "Software Engineer",
-      social: {
-        "email": "pardal.henrique@gmail.com",
-        "facebook": "https://www.facebook.com/caio.henrique.90663",
-        "github": "https://github.com/caiopardal",
-        "instagram": "",
-        "linkedIn":
-            "https://www.linkedin.com/in/caio-henrique-pardal-2b7329166/",
-        "twitter": "",
-      },
-    );
 
     return Scaffold(
       appBar: AppBar(
@@ -173,42 +156,48 @@ class _ActivityDetailState extends State<ActivityDetail> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: 25,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Palestrante(s): ",
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Theme.of(context).primaryColorDark,
-                              fontWeight: FontWeight.bold,
-                            ),
+                    if (widget.speakers.isNotEmpty)
+                      Container(
+                        height: _height * 1.07,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: 25,
                           ),
-                          SpeakerItem(
-                            speaker: speaker,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Palestrante(s): ",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Theme.of(context).primaryColorDark,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 8.0,
+                                ),
+                                child: ListView.separated(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  padding: const EdgeInsets.all(8),
+                                  itemCount: widget.speakers.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return SpeakerItem(
+                                      speaker: widget.speakers[index],
+                                    );
+                                  },
+                                  separatorBuilder:
+                                      (BuildContext context, int index) =>
+                                          const Divider(),
+                                ),
+                              ),
+                            ],
                           ),
-                          // Container(
-                          //   margin: const EdgeInsets.only(
-                          //     top: 4,
-                          //   ),
-                          //   width: _width * 0.8,
-                          //   child: Text(
-                          //     widget.activity.speakers[0] +
-                          //         ', ' +
-                          //         widget.activity.speakers[1],
-                          //     style: TextStyle(
-                          //       fontSize: 20,
-                          //       color: Colors.black,
-                          //     ),
-                          //   ),
-                          // ),
-                        ],
+                        ),
                       ),
-                    ),
                     Padding(
                       padding: const EdgeInsets.only(
                         top: 25.0,

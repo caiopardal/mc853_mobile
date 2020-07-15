@@ -24,7 +24,6 @@ class DatabaseService {
   // speakers list from snapshot
   List<Speaker> _speakerListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
-      print(doc.data);
       return Speaker(
         name: doc.data['name'] ?? '',
         id: doc.data['id'] ?? '',
@@ -67,7 +66,6 @@ class DatabaseService {
   // activities list from snapshot
   List<Activity> _activitiesListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
-      // print(doc.data);
       return Activity(
         name: doc.data['name'] ?? '',
         id: doc.data['id'] ?? '',
@@ -88,7 +86,6 @@ class DatabaseService {
   // users list from snapshot
   List<User> _usersListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
-      // print(doc.data);
       return User(
         name: doc.data['name'] ?? '',
         uid: doc.data['uid'] ?? '',
@@ -114,7 +111,6 @@ class DatabaseService {
     bool exists = false;
     try {
       await Firestore.instance.document("activities/$docID").get().then((doc) {
-        print(doc.data);
         if (doc.data['confirmations'] != null) {
           var confirmedList = List.from(doc.data['confirmations']);
 
@@ -147,7 +143,6 @@ class DatabaseService {
   static Future<List<Activity>> getActivitiesByIds(List<String> docsIDs) async {
     try {
       List<Activity> activities;
-      print("DOCS: $docsIDs");
       docsIDs.forEach((id) async {
         var activity = await getActivityById(id);
         activities.add(activity);
@@ -161,10 +156,8 @@ class DatabaseService {
   static Future<Activity> getActivityById(String docID) async {
     try {
       Activity activity;
-      print("docID: $docID");
 
       await Firestore.instance.document("activities/$docID").get().then((doc) {
-        print(doc.data);
         activity = Activity(
           name: doc.data['name'] ?? '',
           id: doc.data['id'] ?? '',
@@ -177,6 +170,32 @@ class DatabaseService {
       });
 
       return activity;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<List<Speaker>> getSpeakers() async {
+    try {
+      List<Speaker> speakers = [];
+      QuerySnapshot querySnapshot =
+          await Firestore.instance.collection("speakers").getDocuments();
+      for (int i = 0; i < querySnapshot.documents.length; i++) {
+        var doc = querySnapshot.documents[i];
+        Speaker speaker = Speaker(
+          name: doc.data['name'] ?? '',
+          id: doc.data['id'] ?? '',
+          activities: List.from(doc.data['activities']) ?? '',
+          bio: doc.data['bio'] ?? '',
+          shortBio: doc.data['shortBio'] ?? '',
+          imageURL: doc.data['imageUrl'] ?? '',
+          social: Map<String, String>.from(doc.data['social']) ?? '',
+        );
+
+        speakers.add(speaker);
+      }
+
+      return speakers;
     } catch (e) {
       return null;
     }

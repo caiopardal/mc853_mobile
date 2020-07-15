@@ -64,7 +64,6 @@ class SpeakerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(speaker.bio.length);
     return Card(
       elevation: 0.0,
       child: Row(
@@ -128,7 +127,7 @@ class SpeakerItem extends StatelessWidget {
                       : speaker.bio,
                   style: Theme.of(context).textTheme.caption,
                 ),
-                socialActions(context, speaker),
+                if (speaker.social.isNotEmpty) socialActions(context, speaker),
               ],
             ),
           )
