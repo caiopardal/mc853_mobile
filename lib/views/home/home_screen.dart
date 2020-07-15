@@ -145,8 +145,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   ///                      SHOW QR-CODE
   ///===========================================================
   void _showQrCode() async {
-    var userEmail = widget.email;
-    switch (await showDialog(
+    await showDialog(
       context: context,
       builder: (BuildContext context) {
         return new SimpleDialog(
@@ -165,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     padding: const EdgeInsets.symmetric(horizontal: 15.0),
                     child: QrImage(
                       version: 4,
-                      data: userEmail ?? '',
+                      data: widget.uid ?? '',
                       gapless: true,
                       foregroundColor: Colors.black,
                     ),
@@ -177,8 +176,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           backgroundColor: Colors.white,
         );
       },
-    )) {
-    }
+    );
   }
 
   ///===========================================================
