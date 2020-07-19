@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:inscritus/models/activity.dart';
+import 'package:inscritus/models/location.dart';
 import 'package:inscritus/models/speaker.dart';
 import 'package:inscritus/widgets/speaker_item.dart';
 import 'package:pinch_zoom_image_last/pinch_zoom_image_last.dart';
 
 class ActivityDetail extends StatefulWidget {
   final Activity activity;
+  final Location location;
   final List<Speaker> speakers;
 
   ActivityDetail({
     this.activity,
     this.speakers,
+    this.location,
   });
 
   @override
@@ -52,9 +55,9 @@ class _ActivityDetailState extends State<ActivityDetail> {
                         top: 20.0,
                       ),
                       child: PinchZoomImage(
-                        image: Image.asset('assets/map/' +
-                            widget.activity.mapImageName +
-                            '.png'),
+                        image: Image.network(
+                          widget.location.imageUrl,
+                        ),
                         zoomedBackgroundColor:
                             Color.fromRGBO(255, 255, 255, 1.0),
                         hideStatusBarWhileZooming: false,
@@ -113,7 +116,7 @@ class _ActivityDetailState extends State<ActivityDetail> {
                             ),
                             width: _width * 0.8,
                             child: Text(
-                              widget.activity.local,
+                              widget.location.name,
                               style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.black,

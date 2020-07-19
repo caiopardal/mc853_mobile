@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
 import 'package:hidden_drawer_menu/hidden_drawer/screen_hidden_drawer.dart';
 import 'package:hidden_drawer_menu/menu/item_hidden_menu.dart';
+import 'package:inscritus/models/user.dart';
+import 'package:inscritus/services/database.dart';
 import 'package:inscritus/views/about_app/about.dart';
 import 'package:inscritus/views/activities/activities.dart';
 import 'package:inscritus/views/dashboard/dashboard.dart';
@@ -27,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _currentBottomNavItemIndex = 0;
   List<ScreenHiddenDrawer> items = List();
+  User user;
 
   @override
   void initState() {
@@ -47,6 +50,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         Activities(
           uid: widget.uid,
         )));
+
+    DatabaseService.getUserById(widget.uid).then((value) {
+      user = value;
+    });
+
     super.initState();
   }
 
@@ -156,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ),
           children: <Widget>[
             Container(
-              height: 250.0,
+              height: 300.0,
               width: 400.0,
               child: ListView(
                 children: <Widget>[

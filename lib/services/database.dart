@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:inscritus/models/activity.dart';
+import 'package:inscritus/models/activity_type.dart';
 import 'package:inscritus/models/announcement.dart';
+import 'package:inscritus/models/location.dart';
 import 'package:inscritus/models/speaker.dart';
 import 'package:inscritus/models/user.dart';
 
@@ -20,6 +22,12 @@ class DatabaseService {
 
   final CollectionReference activitiesCollection =
       Firestore.instance.collection('activities');
+
+  final CollectionReference activityTypesCollection =
+      Firestore.instance.collection('activity-types');
+
+  final CollectionReference locationsCollection =
+      Firestore.instance.collection('locations');
 
   // speakers list from snapshot
   List<Speaker> _speakerListFromSnapshot(QuerySnapshot snapshot) {
@@ -69,11 +77,17 @@ class DatabaseService {
       return Activity(
         name: doc.data['name'] ?? '',
         id: doc.data['id'] ?? '',
-        local: doc.data['local'] ?? '',
+        lastUpdate: doc.data['lastUpdate'] ?? '',
+        maxCapacity: doc.data['maxCapacity'] ?? null,
+        preRegistration: doc.data['preRegistration'] ?? false,
+        startDate: doc.data['startDate'] ?? '',
+        startTime: doc.data['startTime'] ?? '',
+        type: doc.data['type'] ?? '',
+        visible: doc.data['visible'] ?? true,
         description: doc.data['description'] ?? '',
         speakers: List.from(doc.data['speakers']) ?? '',
-        time: doc.data['time'] ?? '',
-        mapImageName: doc.data['mapImageName'] ?? '',
+        confirmations: List.from(doc.data['confirmations']) ?? '',
+        location: doc.data['location'] ?? '',
       );
     }).toList();
   }
@@ -104,6 +118,43 @@ class DatabaseService {
   // get users stream
   Stream<List<User>> get users {
     return usersCollection.snapshots().map(_usersListFromSnapshot);
+  }
+
+  // activity-types list from snapshot
+  List<ActivityType> _activityTypesListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.documents.map((doc) {
+      return ActivityType(
+        name: doc.data['name'] ?? '',
+        id: doc.data['id'] ?? '',
+        description: doc.data['bio'] ?? '',
+      );
+    }).toList();
+  }
+
+  // get activity-types stream
+  Stream<List<ActivityType>> get activityTypes {
+    return activityTypesCollection
+        .snapshots()
+        .map(_activityTypesListFromSnapshot);
+  }
+
+  // locations list from snapshot
+  List<Location> _locationListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.documents.map((doc) {
+      return Location(
+        name: doc.data['name'] ?? '',
+        id: doc.data['id'] ?? '',
+        description: doc.data['description'] ?? '',
+        imageUrl: doc.data['imageUrl'] ?? '',
+        mapsUrl: doc.data['mapsUrl'] ?? '',
+        mapsLink: doc.data['mapsLink'] ?? '',
+      );
+    }).toList();
+  }
+
+  // get locations stream
+  Stream<List<Location>> get locations {
+    return locationsCollection.snapshots().map(_locationListFromSnapshot);
   }
 
   static Future<bool> checkIfEmailIsAlreadyConfirmed(
@@ -162,11 +213,17 @@ class DatabaseService {
         activity = Activity(
           name: doc.data['name'] ?? '',
           id: doc.data['id'] ?? '',
-          local: doc.data['local'] ?? '',
+          lastUpdate: doc.data['lastUpdate'] ?? '',
+          maxCapacity: doc.data['maxCapacity'] ?? null,
+          preRegistration: doc.data['preRegistration'] ?? false,
+          startDate: doc.data['startDate'] ?? '',
+          startTime: doc.data['startTime'] ?? '',
+          type: doc.data['type'] ?? '',
+          visible: doc.data['visible'] ?? true,
           description: doc.data['description'] ?? '',
           speakers: List.from(doc.data['speakers']) ?? '',
-          time: doc.data['time'] ?? '',
-          mapImageName: doc.data['mapImageName'] ?? '',
+          confirmations: List.from(doc.data['confirmations']) ?? '',
+          location: doc.data['location'] ?? '',
         );
       });
 
@@ -198,6 +255,28 @@ class DatabaseService {
 
       return user;
     } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<Location> getLocationById(String docID) async {
+    try {
+      Location location;
+
+      await Firestore.instance.document("locations/$docID").get().then((doc) {
+        location = Location(
+          name: doc.data['name'] ?? '',
+          id: doc.data['id'] ?? '',
+          description: doc.data['description'] ?? '',
+          imageUrl: doc.data['imageUrl'] ?? '',
+          mapsUrl: doc.data['mapsUrl'] ?? '',
+          mapsLink: doc.data['mapsLink'] ?? '',
+        );
+      });
+
+      return location;
+    } catch (e) {
+      print(e);
       return null;
     }
   }

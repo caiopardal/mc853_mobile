@@ -1,21 +1,22 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:inscritus/models/activity.dart';
+import 'package:inscritus/models/location.dart';
 import 'package:inscritus/models/speaker.dart';
 import 'package:inscritus/services/database.dart';
 import 'package:inscritus/widgets/activities_for_day.dart';
 import 'package:inscritus/widgets/activity_detail.dart';
 
 class MyActivities extends StatefulWidget {
-  final String uid;
   final String day;
   final List<Speaker> speakers;
+  final List<Activity> activities;
 
   MyActivities({
     Key key,
-    @required this.uid,
     @required this.day,
     @required this.speakers,
+    @required this.activities,
   }) : super(key: key);
 
   @override
@@ -23,20 +24,8 @@ class MyActivities extends StatefulWidget {
 }
 
 class _MyActivitiesState extends State<MyActivities> {
-  List<Activity> activities;
-
-  @override
-  void initState() {
-    DatabaseService.getUserActivitiesIds(widget.uid).then((value) {
-      DatabaseService.getActivitiesByIds(value).then((newActivities) {
-        setState(() {
-          activities = newActivities;
-        });
-      });
-    });
-
-    super.initState();
-  }
+  Location location;
+  bool loading = false;
 
   List<Speaker> filterSpeakers(List<Speaker> speakers, Activity activity) {
     List<Speaker> newSpeakers = [];
@@ -53,9 +42,24 @@ class _MyActivitiesState extends State<MyActivities> {
     return newSpeakers;
   }
 
+  Future<Location> getLocation(String locationId) async {
+    setState(() {
+      loading = true;
+    });
+
+    await DatabaseService.getLocationById(locationId).then((value) {
+      setState(() {
+        location = value;
+        loading = false;
+      });
+    });
+
+    return location;
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (activities == null) {
+    if (widget.activities == null) {
       return Center(
         child: Container(
           color: Colors.transparent,
@@ -76,22 +80,41 @@ class _MyActivitiesState extends State<MyActivities> {
       body: Container(
         child: ListView.builder(
           padding: EdgeInsets.all(15.0),
-          itemCount: activities == null ? 1 : activities.length,
+          itemCount: widget.activities == null ? 1 : widget.activities.length,
           itemBuilder: (BuildContext context, int index) {
+            if (loading) {
+              return Center(
+                child: Container(
+                  color: Colors.transparent,
+                  height: 400.0,
+                  width: 400.0,
+                  child: FlareActor(
+                    'assets/flare/loading_indicator.flr',
+                    alignment: Alignment.center,
+                    fit: BoxFit.contain,
+                    animation: "idle",
+                  ),
+                ),
+              );
+            }
+
             return GestureDetector(
               onTap: () async {
+                await getLocation(widget.activities[index].location);
+
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => ActivityDetail(
-                      activity: activities[index],
-                      speakers:
-                          filterSpeakers(widget.speakers, activities[index]),
+                      activity: widget.activities[index],
+                      location: location,
+                      speakers: filterSpeakers(
+                          widget.speakers, widget.activities[index]),
                     ),
                   ),
                 );
               },
               child: ActivityCard(
-                resource: activities[index],
+                resource: widget.activities[index],
                 day: this.widget.day,
                 isFavoritesScreen: true,
               ),

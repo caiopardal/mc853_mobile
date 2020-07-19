@@ -23,6 +23,7 @@ class ActivitiesState extends State<Activities>
     with SingleTickerProviderStateMixin {
   TabController controller;
   List<Speaker> speakers;
+  List<Activity> activities;
 
   @override
   void initState() {
@@ -32,6 +33,14 @@ class ActivitiesState extends State<Activities>
     DatabaseService.getSpeakers().then((value) {
       setState(() {
         speakers = value;
+      });
+    });
+
+    DatabaseService.getUserActivitiesIds(widget.uid).then((value) {
+      DatabaseService.getActivitiesByIds(value).then((newActivities) {
+        setState(() {
+          activities = newActivities;
+        });
       });
     });
   }
@@ -83,17 +92,17 @@ class ActivitiesState extends State<Activities>
         ),
         body: getTabBarView(<Widget>[
           ActivitiesForDay(
-            day: '5',
+            day: '05',
             speakers: speakers,
           ),
           ActivitiesForDay(
-            day: '6',
+            day: '06',
             speakers: speakers,
           ),
           MyActivities(
             day: '',
             speakers: speakers,
-            uid: widget.uid,
+            activities: activities,
           ),
         ]),
       ),

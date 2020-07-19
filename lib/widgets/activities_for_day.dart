@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
 import 'package:inscritus/helpers/utils.dart';
 import 'package:inscritus/models/activity.dart';
+import 'package:inscritus/models/location.dart';
 import 'package:inscritus/models/speaker.dart';
+import 'package:inscritus/services/database.dart';
 import 'package:inscritus/widgets/activity_detail.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:flare_flutter/flare_actor.dart';
 
@@ -27,13 +28,11 @@ class _ActivityCardState extends State<ActivityCard> {
   bool isExpanded = false;
 
   Widget build(BuildContext context) {
-    var eventDay =
-        DateFormat.d().format(widget.resource.time.toDate().toLocal());
-    var today = DateTime.now().day.toString();
+    var splittedDate = widget.resource.startDate.split('-');
+    var eventDay = splittedDate[2];
 
-    var convertedTime =
-        DateTime.parse(widget.resource.time.toDate().toString()).toString();
-    var time = timeFormat(convertedTime.substring(11, 16));
+    var today = DateTime.now().day.toString();
+    var time = timeFormat(widget.resource.startTime);
 
     if (eventDay == widget.day ||
         eventDay == today ||
@@ -113,7 +112,7 @@ class _ActivityCardState extends State<ActivityCard> {
   }
 }
 
-class ActivitiesForDay extends StatelessWidget {
+class ActivitiesForDay extends StatefulWidget {
   final String day;
   final List<Speaker> speakers;
 
@@ -122,6 +121,14 @@ class ActivitiesForDay extends StatelessWidget {
     @required this.day,
     @required this.speakers,
   }) : super(key: key);
+
+  @override
+  _ActivitiesForDayState createState() => _ActivitiesForDayState();
+}
+
+class _ActivitiesForDayState extends State<ActivitiesForDay> {
+  Location location;
+  bool loading = false;
 
   List<Speaker> filterSpeakers(List<Speaker> speakers, Activity activity) {
     List<Speaker> newSpeakers = [];
@@ -136,6 +143,21 @@ class ActivitiesForDay extends StatelessWidget {
     }
 
     return newSpeakers;
+  }
+
+  Future<Location> getLocation(String locationId) async {
+    setState(() {
+      loading = true;
+    });
+
+    await DatabaseService.getLocationById(locationId).then((value) {
+      setState(() {
+        location = value;
+        loading = false;
+      });
+    });
+
+    return location;
   }
 
   @override
@@ -165,20 +187,40 @@ class ActivitiesForDay extends StatelessWidget {
           padding: EdgeInsets.all(15.0),
           itemCount: activities == null ? 1 : activities.length,
           itemBuilder: (BuildContext context, int index) {
+            if (loading) {
+              return Center(
+                child: Container(
+                  color: Colors.transparent,
+                  height: 400.0,
+                  width: 400.0,
+                  child: FlareActor(
+                    'assets/flare/loading_indicator.flr',
+                    alignment: Alignment.center,
+                    fit: BoxFit.contain,
+                    animation: "idle",
+                  ),
+                ),
+              );
+            }
+
             return GestureDetector(
               onTap: () async {
+                await getLocation(activities[index].location);
+
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => ActivityDetail(
                       activity: activities[index],
-                      speakers: filterSpeakers(speakers, activities[index]),
+                      location: location,
+                      speakers:
+                          filterSpeakers(widget.speakers, activities[index]),
                     ),
                   ),
                 );
               },
               child: ActivityCard(
                 resource: activities[index],
-                day: this.day,
+                day: this.widget.day,
               ),
             );
           },
