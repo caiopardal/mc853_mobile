@@ -191,6 +191,69 @@ class DatabaseService {
     }
   }
 
+  static Future<void> favoriteActivity(
+    String uid,
+    String activityId,
+  ) async {
+    List activities = [];
+    activities.add(activityId);
+    try {
+      await Firestore.instance
+          .document("users/$uid")
+          .updateData({"activities": FieldValue.arrayUnion(activities)});
+    } catch (e) {
+      return false;
+    }
+  }
+
+  static Future<bool> checkIfActivityIsAlreadyFavorited(
+      String uid, String activityId) async {
+    bool exists = false;
+    try {
+      await Firestore.instance.document("users/$uid").get().then((doc) {
+        if (doc.data['activities'] != null) {
+          var confirmedList = List.from(doc.data['activities']);
+
+          if (confirmedList.contains(activityId)) {
+            exists = true;
+          } else {
+            exists = false;
+          }
+        }
+      });
+      return exists;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  static Future<void> removeActivityFromFavorites(
+      String uid, String activityId) async {
+    try {
+      await Firestore.instance.document("users/$uid").get().then((doc) async {
+        if (doc.data['activities'] != null) {
+          var confirmedList = List.from(doc.data['activities']);
+
+          if (confirmedList.contains(activityId)) {
+            List activities = [];
+            activities.add(activityId);
+            try {
+              await Firestore.instance.document("users/$uid").updateData(
+                  {"activities": FieldValue.arrayRemove(activities)});
+            } catch (e) {
+              return false;
+            }
+          }
+        }
+        return true;
+      });
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   static Future<List<Activity>> getActivitiesByIds(List<String> docsIDs) async {
     try {
       List<Activity> activities = [];
@@ -311,15 +374,15 @@ class DatabaseService {
     try {
       List<String> ids = [];
 
-      QuerySnapshot querySnapshot = await Firestore.instance
-          .document("users/$docID")
-          .collection("activities")
-          .getDocuments();
-      for (int i = 0; i < querySnapshot.documents.length; i++) {
-        var doc = querySnapshot.documents[i];
-        ids.add(doc.documentID);
-      }
+      await Firestore.instance.document("users/$docID").get().then((doc) async {
+        if (doc.data['activities'] != null) {
+          var confirmedList = List.from(doc.data['activities']);
 
+          for (int i = 0; i < confirmedList.length; i++) {
+            ids.add(confirmedList[i]);
+          }
+        }
+      });
       return ids;
     } catch (e) {
       return null;

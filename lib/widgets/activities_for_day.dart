@@ -13,11 +13,13 @@ class ActivityCard extends StatefulWidget {
   ActivityCard({
     @required this.resource,
     @required this.day,
+    @required this.uid,
     this.isFavoritesScreen = false,
   });
 
   final Activity resource;
   final String day;
+  final String uid;
   final bool isFavoritesScreen;
 
   @override
@@ -25,6 +27,22 @@ class ActivityCard extends StatefulWidget {
 }
 
 class _ActivityCardState extends State<ActivityCard> {
+  bool isFavorite = false;
+
+  @override
+  void initState() {
+    DatabaseService.checkIfActivityIsAlreadyFavorited(
+      widget.uid,
+      widget.resource.id,
+    ).then((value) {
+      setState(() {
+        isFavorite = value;
+      });
+    });
+
+    super.initState();
+  }
+
   bool isExpanded = false;
 
   Widget build(BuildContext context) {
@@ -79,10 +97,33 @@ class _ActivityCardState extends State<ActivityCard> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(12.0),
-                      child: Icon(
-                        isExpanded ? Icons.star_border : Icons.star,
-                        color: Theme.of(context).primaryColorDark,
-                        size: 30.0,
+                      child: IconButton(
+                        icon: Icon(
+                          !isFavorite ? Icons.star_border : Icons.star,
+                          color: Theme.of(context).primaryColorDark,
+                          size: 30.0,
+                        ),
+                        onPressed: !isFavorite
+                            ? () async {
+                                setState(() {
+                                  isFavorite = true;
+                                });
+                                await DatabaseService.favoriteActivity(
+                                  widget.uid,
+                                  widget.resource.id,
+                                );
+                              }
+                            : () async {
+                                setState(() {
+                                  isFavorite = false;
+                                });
+
+                                await DatabaseService
+                                    .removeActivityFromFavorites(
+                                  widget.uid,
+                                  widget.resource.id,
+                                );
+                              },
                       ),
                     ),
                   ],
@@ -114,11 +155,13 @@ class _ActivityCardState extends State<ActivityCard> {
 
 class ActivitiesForDay extends StatefulWidget {
   final String day;
+  final String uid;
   final List<Speaker> speakers;
 
   ActivitiesForDay({
     Key key,
     @required this.day,
+    @required this.uid,
     @required this.speakers,
   }) : super(key: key);
 
@@ -221,6 +264,7 @@ class _ActivitiesForDayState extends State<ActivitiesForDay> {
               child: ActivityCard(
                 resource: activities[index],
                 day: this.widget.day,
+                uid: widget.uid,
               ),
             );
           },

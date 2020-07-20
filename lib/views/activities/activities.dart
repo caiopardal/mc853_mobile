@@ -38,6 +38,7 @@ class ActivitiesState extends State<Activities>
 
     DatabaseService.getUserActivitiesIds(widget.uid).then((value) {
       DatabaseService.getActivitiesByIds(value).then((newActivities) {
+        print(newActivities);
         setState(() {
           activities = newActivities;
         });
@@ -94,15 +95,18 @@ class ActivitiesState extends State<Activities>
           ActivitiesForDay(
             day: '05',
             speakers: speakers,
+            uid: widget.uid,
           ),
           ActivitiesForDay(
             day: '06',
             speakers: speakers,
+            uid: widget.uid,
           ),
           MyActivities(
             day: '',
             speakers: speakers,
             activities: activities,
+            uid: widget.uid,
           ),
         ]),
       ),

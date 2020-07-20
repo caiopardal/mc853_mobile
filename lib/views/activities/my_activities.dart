@@ -9,12 +9,14 @@ import 'package:inscritus/widgets/activity_detail.dart';
 
 class MyActivities extends StatefulWidget {
   final String day;
+  final String uid;
   final List<Speaker> speakers;
   final List<Activity> activities;
 
   MyActivities({
     Key key,
     @required this.day,
+    @required this.uid,
     @required this.speakers,
     @required this.activities,
   }) : super(key: key);
@@ -116,6 +118,7 @@ class _MyActivitiesState extends State<MyActivities> {
               child: ActivityCard(
                 resource: widget.activities[index],
                 day: this.widget.day,
+                uid: widget.uid,
                 isFavoritesScreen: true,
               ),
             );
