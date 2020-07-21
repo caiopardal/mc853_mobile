@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:inscritus/services/database.dart';
 
 class UserRepository {
   final FirebaseAuth _firebaseAuth;
@@ -29,11 +30,29 @@ class UserRepository {
     );
   }
 
-  Future<void> signUp({String email, String password}) async {
-    return await _firebaseAuth.createUserWithEmailAndPassword(
+  Future<void> signUp({
+    String email,
+    String password,
+    String cpf,
+    String name,
+    String phone,
+  }) async {
+    var status = await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
+
+    final currentUser = await _firebaseAuth.currentUser();
+
+    await DatabaseService.registerNewUser(
+      email,
+      cpf,
+      name,
+      phone,
+      currentUser.uid,
+    );
+
+    return status;
   }
 
   Future<void> signOut() async {

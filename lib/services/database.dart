@@ -388,4 +388,31 @@ class DatabaseService {
       return null;
     }
   }
+
+  static Future<void> registerNewUser(
+    String email,
+    String cpf,
+    String name,
+    String phone,
+    String uid,
+  ) async {
+    Timestamp now = Timestamp.now();
+
+    try {
+      await Firestore.instance.document("users/$uid").setData({
+        "uid": uid,
+        "cpf": cpf,
+        "name": name,
+        "phone": phone,
+        "email": email,
+        "isActive": true,
+        "isAdmin": false,
+        "emailVerified": false,
+        "createdAt": now,
+        "lastUpdate": now,
+      });
+    } catch (e) {
+      return false;
+    }
+  }
 }

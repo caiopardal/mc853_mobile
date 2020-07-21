@@ -22,10 +22,18 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     TransitionFunction<RegisterEvent, RegisterState> transitionFn,
   ) {
     final nonDebounceStream = events.where((event) {
-      return (event is! EmailChanged && event is! PasswordChanged);
+      return (event is! EmailChanged &&
+          event is! PasswordChanged &&
+          event is! CPFChanged &&
+          event is! NameChanged &&
+          event is! PhoneChanged);
     });
     final debounceStream = events.where((event) {
-      return (event is EmailChanged || event is PasswordChanged);
+      return (event is EmailChanged ||
+          event is PasswordChanged ||
+          event is CPFChanged ||
+          event is NameChanged ||
+          event is PhoneChanged);
     }).debounceTime(Duration(milliseconds: 300));
     return super.transformEvents(
       nonDebounceStream.mergeWith([debounceStream]),
@@ -41,8 +49,20 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       yield* _mapEmailChangedToState(event.email);
     } else if (event is PasswordChanged) {
       yield* _mapPasswordChangedToState(event.password);
+    } else if (event is CPFChanged) {
+      yield* _mapCPFChangedToState(event.cpf);
+    } else if (event is NameChanged) {
+      yield* _mapNameChangedToState(event.name);
+    } else if (event is PhoneChanged) {
+      yield* _mapPhoneChangedToState(event.phone);
     } else if (event is Submitted) {
-      yield* _mapFormSubmittedToState(event.email, event.password);
+      yield* _mapFormSubmittedToState(
+        event.email,
+        event.password,
+        event.cpf,
+        event.name,
+        event.phone,
+      );
     }
   }
 
@@ -58,15 +78,39 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     );
   }
 
+  Stream<RegisterState> _mapCPFChangedToState(String cpf) async* {
+    yield state.update(
+      isCPFValid: Validators.validateCPF(cpf),
+    );
+  }
+
+  Stream<RegisterState> _mapNameChangedToState(String name) async* {
+    yield state.update(
+      isNameValid: Validators.validateUserName(name),
+    );
+  }
+
+  Stream<RegisterState> _mapPhoneChangedToState(String phone) async* {
+    yield state.update(
+      isPhoneValid: Validators.validatePhone(phone),
+    );
+  }
+
   Stream<RegisterState> _mapFormSubmittedToState(
     String email,
     String password,
+    String cpf,
+    String name,
+    String phone,
   ) async* {
     yield RegisterState.loading();
     try {
       await _userRepository.signUp(
         email: email,
         password: password,
+        cpf: cpf,
+        name: name,
+        phone: phone,
       );
       yield RegisterState.success();
     } catch (_) {

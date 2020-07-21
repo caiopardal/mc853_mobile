@@ -11,11 +11,18 @@ class RegisterForm extends StatefulWidget {
 class _RegisterFormState extends State<RegisterForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _cpfController = TextEditingController();
 
   RegisterBloc _registerBloc;
 
   bool get isPopulated =>
-      _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
+      _emailController.text.isNotEmpty &&
+      _passwordController.text.isNotEmpty &&
+      _cpfController.text.isNotEmpty &&
+      _nameController.text.isNotEmpty &&
+      _phoneController.text.isNotEmpty;
 
   bool isRegisterButtonEnabled(RegisterState state) {
     return state.isFormValid && isPopulated && !state.isSubmitting;
@@ -27,6 +34,9 @@ class _RegisterFormState extends State<RegisterForm> {
     _registerBloc = BlocProvider.of<RegisterBloc>(context);
     _emailController.addListener(_onEmailChanged);
     _passwordController.addListener(_onPasswordChanged);
+    _cpfController.addListener(_onCPFChanged);
+    _nameController.addListener(_onNameChanged);
+    _phoneController.addListener(_onPhoneChanged);
   }
 
   @override
@@ -78,6 +88,32 @@ class _RegisterFormState extends State<RegisterForm> {
               child: ListView(
                 children: <Widget>[
                   TextFormField(
+                    controller: _nameController,
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.portrait),
+                      labelText: 'Nome',
+                    ),
+                    keyboardType: TextInputType.text,
+                    autocorrect: false,
+                    autovalidate: true,
+                    validator: (_) {
+                      return !state.isNameValid ? 'Nome inválido' : null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: _cpfController,
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.chrome_reader_mode),
+                      labelText: 'CPF',
+                    ),
+                    keyboardType: TextInputType.number,
+                    autocorrect: false,
+                    autovalidate: true,
+                    validator: (_) {
+                      return !state.isCPFValid ? 'CPF inválido' : null;
+                    },
+                  ),
+                  TextFormField(
                     controller: _emailController,
                     decoration: InputDecoration(
                       icon: Icon(Icons.email),
@@ -88,6 +124,19 @@ class _RegisterFormState extends State<RegisterForm> {
                     autovalidate: true,
                     validator: (_) {
                       return !state.isEmailValid ? 'E-mail inválido' : null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: _phoneController,
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.phone),
+                      labelText: 'Phone',
+                    ),
+                    keyboardType: TextInputType.phone,
+                    autocorrect: false,
+                    autovalidate: true,
+                    validator: (_) {
+                      return !state.isPhoneValid ? 'Telefone inválido' : null;
                     },
                   ),
                   TextFormField(
@@ -121,6 +170,9 @@ class _RegisterFormState extends State<RegisterForm> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _cpfController.dispose();
+    _nameController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
@@ -136,11 +188,32 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
+  void _onCPFChanged() {
+    _registerBloc.add(
+      CPFChanged(cpf: _cpfController.text),
+    );
+  }
+
+  void _onNameChanged() {
+    _registerBloc.add(
+      NameChanged(name: _nameController.text),
+    );
+  }
+
+  void _onPhoneChanged() {
+    _registerBloc.add(
+      PhoneChanged(phone: _phoneController.text),
+    );
+  }
+
   void _onFormSubmitted() {
     _registerBloc.add(
       Submitted(
         email: _emailController.text,
         password: _passwordController.text,
+        cpf: _cpfController.text,
+        name: _nameController.text,
+        phone: _phoneController.text,
       ),
     );
   }
