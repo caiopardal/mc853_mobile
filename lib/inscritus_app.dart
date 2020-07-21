@@ -12,10 +12,12 @@ import 'package:inscritus/views/map/map.dart';
 class InscritusApp extends StatefulWidget {
   final String email;
   final String uid;
+  final bool isAdmin;
 
   InscritusApp({
     this.email,
     this.uid,
+    this.isAdmin,
   });
 
   @override
@@ -36,6 +38,7 @@ class _InscritusAppState extends State<InscritusApp> {
         HomeScreen(
           email: widget.email,
           uid: widget.uid,
+          isAdmin: widget.isAdmin,
         )));
 
     items.add(new ScreenHiddenDrawer(
@@ -46,13 +49,14 @@ class _InscritusAppState extends State<InscritusApp> {
         ),
         About()));
 
-    items.add(new ScreenHiddenDrawer(
-        new ItemHiddenMenu(
-          name: "Scans",
-          baseStyle: TextStyle(color: Colors.black, fontSize: 28.0),
-          colorLineSelected: Colors.orange,
-        ),
-        QRScanner()));
+    if (widget.isAdmin)
+      items.add(new ScreenHiddenDrawer(
+          new ItemHiddenMenu(
+            name: "Scans",
+            baseStyle: TextStyle(color: Colors.black, fontSize: 28.0),
+            colorLineSelected: Colors.orange,
+          ),
+          QRScanner()));
 
     items.add(new ScreenHiddenDrawer(
         new ItemHiddenMenu(

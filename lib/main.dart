@@ -42,6 +42,7 @@ class Inscritus extends StatelessWidget {
             return InscritusApp(
               email: state.user.email,
               uid: state.user.uid,
+              isAdmin: state.user.isAdmin,
             );
           }
           return SplashScreen();

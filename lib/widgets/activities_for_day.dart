@@ -95,8 +95,11 @@ class _ActivityCardState extends State<ActivityCard> {
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
+                    Container(
+                      padding: const EdgeInsets.only(
+                        top: 5,
+                        right: 10,
+                      ),
                       child: IconButton(
                         icon: Icon(
                           !isFavorite ? Icons.star_border : Icons.star,

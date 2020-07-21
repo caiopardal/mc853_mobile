@@ -13,12 +13,14 @@ import 'package:qr_flutter/qr_flutter.dart';
 class HomeScreen extends StatefulWidget {
   final String email;
   final String uid;
+  final bool isAdmin;
   static String routeName = '/home';
 
   HomeScreen({
     Key key,
     @required this.email,
     @required this.uid,
+    @required this.isAdmin,
   }) : super(key: key);
 
   @override

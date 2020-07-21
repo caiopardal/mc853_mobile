@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:inscritus/models/user.dart';
 import 'package:inscritus/services/database.dart';
 
 class UserRepository {
@@ -67,7 +68,10 @@ class UserRepository {
     return currentUser != null;
   }
 
-  Future<FirebaseUser> getUser() async {
-    return (await _firebaseAuth.currentUser());
+  Future<User> getUser() async {
+    var firebaseUser = await _firebaseAuth.currentUser();
+    User user = await DatabaseService.getUserById(firebaseUser.uid);
+
+    return user;
   }
 }
