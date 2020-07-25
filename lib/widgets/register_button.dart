@@ -18,7 +18,12 @@ class RegisterButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(30.0),
         ),
         onPressed: _onPressed,
-        child: Text('Cadastrar-se'),
+        child: Text(
+          'Cadastrar-se',
+          style: TextStyle(
+            fontSize: 20,
+          ),
+        ),
       ),
     );
   }

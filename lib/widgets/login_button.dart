@@ -14,7 +14,12 @@ class LoginButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(30.0),
       ),
       onPressed: _onPressed,
-      child: Text('Entrar'),
+      child: Text(
+        'Entrar',
+        style: TextStyle(
+          fontSize: 20,
+        ),
+      ),
     );
   }
 }

@@ -48,7 +48,7 @@ class _InscritusAppState extends State<InscritusApp> {
           baseStyle: TextStyle(color: Colors.black, fontSize: 28.0),
           colorLineSelected: Colors.orange,
         ),
-        About()));
+        InformationScreen()));
 
     items.add(
       new ScreenHiddenDrawer(

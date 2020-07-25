@@ -25,6 +25,9 @@ class CreateAccountButton extends StatelessWidget {
         ),
         child: Text(
           'Crie uma conta',
+          style: TextStyle(
+            fontSize: 20,
+          ),
         ),
       ),
       onPressed: () {

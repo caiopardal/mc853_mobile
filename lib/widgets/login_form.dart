@@ -86,24 +86,29 @@ class _LoginFormState extends State<LoginForm> {
               child: ListView(
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20),
+                    padding: EdgeInsets.symmetric(vertical: 40),
                     child: SvgPicture.asset(
                       "assets/logo.svg",
                       height: 60.0,
                     ),
                   ),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      icon: Icon(Icons.email),
-                      labelText: 'E-mail',
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 80.0,
                     ),
-                    keyboardType: TextInputType.emailAddress,
-                    autovalidate: true,
-                    autocorrect: false,
-                    validator: (_) {
-                      return !state.isEmailValid ? 'E-mail inválido' : null;
-                    },
+                    child: TextFormField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.email),
+                        labelText: 'E-mail',
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      autovalidate: true,
+                      autocorrect: false,
+                      validator: (_) {
+                        return !state.isEmailValid ? 'E-mail inválido' : null;
+                      },
+                    ),
                   ),
                   TextFormField(
                     controller: _passwordController,
@@ -128,7 +133,7 @@ class _LoginFormState extends State<LoginForm> {
                               ? _onFormSubmitted
                               : null,
                         ),
-                        GoogleLoginButton(),
+                        // GoogleLoginButton(),
                         CreateAccountButton(userRepository: _userRepository),
                       ],
                     ),
