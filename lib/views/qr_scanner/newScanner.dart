@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:groovin_material_icons/groovin_material_icons.dart';
-import 'package:inscritus/helpers/utils.dart';
+// import 'package:groovin_material_icons/groovin_material_icons.dart';
 import 'package:inscritus/services/database.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qr_code_scanner/qr_scanner_overlay_shape.dart';
@@ -26,7 +25,7 @@ class _NewScannerState extends State<NewScanner>
   QRViewController controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   AnimationController _animationController;
-  bool isPlaying = false;
+  // bool isPlaying = false;
 
   @override
   void initState() {
@@ -86,18 +85,18 @@ class _NewScannerState extends State<NewScanner>
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  new Container(
-                    child: IconButton(
-                      iconSize: 80,
-                      icon: Icon(
-                        isPlaying
-                            ? GroovinMaterialIcons.play_circle
-                            : GroovinMaterialIcons.pause_circle,
-                        color: isPlaying ? Colors.yellow : Color(0xFFe06969),
-                      ),
-                      onPressed: () => _handleOnPressed(),
-                    ),
-                  ),
+                  // new Container(
+                  //   child: IconButton(
+                  //     iconSize: 80,
+                  //     icon: Icon(
+                  //       isPlaying
+                  //           ? GroovinMaterialIcons.play_circle
+                  //           : GroovinMaterialIcons.pause_circle,
+                  //       color: isPlaying ? Colors.yellow : Color(0xFFe06969),
+                  //     ),
+                  //     onPressed: () => _handleOnPressed(),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -109,7 +108,7 @@ class _NewScannerState extends State<NewScanner>
   }
 
   void _onQRViewCreated(QRViewController controller) {
-    var prevQR = 'xxx@xxx.com.br';
+    var prevQR = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx';
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
       setState(() {
@@ -125,37 +124,38 @@ class _NewScannerState extends State<NewScanner>
     });
   }
 
-  void _handleOnPressed() {
-    setState(() {
-      isPlaying = !isPlaying;
-      if (isPlaying) {
-        _animationController.forward();
-        controller?.pauseCamera();
-      } else {
-        _animationController.reverse();
-        controller?.resumeCamera();
-      }
-    });
-  }
+  // void _handleOnPressed() {
+  //   setState(() {
+  //     isPlaying = !isPlaying;
+  //     if (isPlaying) {
+  //       _animationController.forward();
+  //       controller?.pauseCamera();
+  //     } else {
+  //       _animationController.reverse();
+  //       controller?.resumeCamera();
+  //     }
+  //   });
+  // }
 
   void _qrRequest(String scanData) async {
-    var checkIfItIsAEmailAddress = isEmailAddress(scanData);
+    var checkIfItIsAValidUID = scanData.isNotEmpty && scanData.length >= 28;
     var message;
 
-    if (checkIfItIsAEmailAddress) {
+    if (checkIfItIsAValidUID) {
       bool exists = await DatabaseService.checkIfEmailIsAlreadyConfirmed(
           widget.eventID, scanData);
       if (!exists) {
-        message = "E-mail confirmado na atividade com sucesso!";
+        message = "Usuário confirmado na atividade com sucesso!";
         await DatabaseService.confirmAnEmailToActivity(
             widget.eventID, scanData);
         _scanDialogSuccess(message);
       } else {
-        message = "E-mail já confirmado anteriormente!";
+        message = "Usuário já confirmado anteriormente!";
         _scanDialogWarning(message);
       }
     } else {
-      _scanDialogWarning("O QR Code escaneado não apresenta um e-mail");
+      _scanDialogWarning(
+          "O QR Code escaneado não apresenta um usuário válido!");
     }
   }
 
