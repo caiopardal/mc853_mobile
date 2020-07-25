@@ -83,6 +83,10 @@ class DatabaseService {
         preRegistration: doc.data['preRegistration'] ?? false,
         startDate: doc.data['startDate'] ?? '',
         startTime: doc.data['startTime'] ?? '',
+        endDate: doc.data['endDate'] ?? '',
+        endTime: doc.data['endTime'] ?? '',
+        registrationDate: doc.data['registrationDate'] ?? '',
+        registrationTime: doc.data['registrationTime'] ?? '',
         type: doc.data['type'] ?? '',
         visible: doc.data['visible'] ?? true,
         description: doc.data['description'] ?? '',
@@ -159,34 +163,37 @@ class DatabaseService {
   }
 
   static Future<bool> checkIfEmailIsAlreadyConfirmed(
-      String docID, String email) async {
+      String activityId, String uid) async {
     bool exists = false;
     try {
-      await Firestore.instance.document("activities/$docID").get().then((doc) {
-        if (doc.data['confirmations'] != null) {
-          var confirmedList = List.from(doc.data['confirmations']);
-
-          if (confirmedList.contains(email)) {
-            exists = true;
-          } else {
-            exists = false;
-          }
+      await Firestore.instance
+          .document("users/$uid/confirmations/$activityId")
+          .get()
+          .then((doc) {
+        if (doc.data['activity'] != null) {
+          exists = true;
+        } else {
+          exists = false;
         }
       });
       return exists;
     } catch (e) {
+      print(e);
       return false;
     }
   }
 
   static Future<void> confirmAnEmailToActivity(
-      String docID, String email) async {
-    List emails = [];
-    emails.add(email);
+      String activityId, String uid) async {
+    Timestamp now = Timestamp.now();
+
     try {
       await Firestore.instance
-          .document("activities/$docID")
-          .updateData({"confirmations": FieldValue.arrayUnion(emails)});
+          .document("users/$uid/confirmations/$activityId")
+          .setData({
+        "activity": activityId,
+        "createdAt": now,
+      });
     } catch (e) {
       return false;
     }
@@ -226,6 +233,7 @@ class DatabaseService {
       });
       return exists;
     } catch (e) {
+      print(e);
       return false;
     }
   }
@@ -240,6 +248,63 @@ class DatabaseService {
         if (doc.data['activity'] != null) {
           await Firestore.instance
               .document("users/$uid/favorites/$activityId")
+              .delete();
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static Future<void> preRegisterToActivity(
+    String uid,
+    String activityId,
+  ) async {
+    Timestamp now = Timestamp.now();
+
+    try {
+      await Firestore.instance
+          .document("users/$uid/preRegistrations/$activityId")
+          .setData({
+        "activity": activityId,
+        "createdAt": now,
+      });
+    } catch (e) {
+      return false;
+    }
+  }
+
+  static Future<bool> checkIfActivityIsAlreadyPreRegistered(
+      String uid, String activityId) async {
+    bool exists = false;
+    try {
+      await Firestore.instance
+          .document("users/$uid/preRegistrations/$activityId")
+          .get()
+          .then((doc) {
+        if (doc.data['activity'] != null) {
+          exists = true;
+        } else {
+          exists = false;
+        }
+      });
+      return exists;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  static Future<void> removeActivityFromPreRegistrations(
+      String uid, String activityId) async {
+    try {
+      await Firestore.instance
+          .document("users/$uid/preRegistrations/$activityId")
+          .get()
+          .then((doc) async {
+        if (doc.data['activity'] != null) {
+          await Firestore.instance
+              .document("users/$uid/preRegistrations/$activityId")
               .delete();
         }
       });
@@ -276,6 +341,10 @@ class DatabaseService {
         preRegistration: doc.data['preRegistration'] ?? false,
         startDate: doc.data['startDate'] ?? '',
         startTime: doc.data['startTime'] ?? '',
+        endDate: doc.data['endDate'] ?? '',
+        endTime: doc.data['endTime'] ?? '',
+        registrationDate: doc.data['registrationDate'] ?? '',
+        registrationTime: doc.data['registrationTime'] ?? '',
         type: doc.data['type'] ?? '',
         visible: doc.data['visible'] ?? true,
         description: doc.data['description'] ?? '',

@@ -14,6 +14,10 @@ class Activity {
   Timestamp lastUpdate;
   String startDate;
   String startTime;
+  String endDate;
+  String endTime;
+  String registrationDate;
+  String registrationTime;
 
   Activity({
     this.id,
@@ -29,5 +33,9 @@ class Activity {
     this.description,
     this.speakers,
     this.confirmations,
+    this.endDate,
+    this.endTime,
+    this.registrationDate,
+    this.registrationTime,
   });
 }

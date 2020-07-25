@@ -157,6 +157,7 @@ class _MyActivitiesListState extends State<MyActivitiesList> {
                             widget.speakers,
                             activities[index],
                           ),
+                          uid: widget.uid,
                         ),
                       ),
                     );

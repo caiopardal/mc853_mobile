@@ -81,12 +81,12 @@ class ActivitiesState extends State<Activities>
         ),
         body: getTabBarView(<Widget>[
           ActivitiesForDay(
-            day: '05',
+            day: '28',
             speakers: speakers,
             uid: widget.uid,
           ),
           ActivitiesForDay(
-            day: '06',
+            day: '29',
             speakers: speakers,
             uid: widget.uid,
           ),

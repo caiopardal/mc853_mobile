@@ -260,6 +260,7 @@ class _ActivitiesForDayState extends State<ActivitiesForDay> {
                       location: location,
                       speakers:
                           filterSpeakers(widget.speakers, activities[index]),
+                      uid: widget.uid,
                     ),
                   ),
                 );
