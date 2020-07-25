@@ -9,8 +9,6 @@ import 'package:inscritus/views/qr_scanner/scanner_dropdown.dart';
 import 'package:provider/provider.dart';
 
 class QRScanner extends StatefulWidget {
-  static String userEmail, userPassword;
-
   @override
   _QRScannerState createState() => _QRScannerState();
 }

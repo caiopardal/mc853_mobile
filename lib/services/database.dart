@@ -5,6 +5,7 @@ import 'package:inscritus/models/announcement.dart';
 import 'package:inscritus/models/location.dart';
 import 'package:inscritus/models/speaker.dart';
 import 'package:inscritus/models/user.dart';
+import 'package:rxdart/rxdart.dart';
 
 class DatabaseService {
   final String uid;
@@ -195,12 +196,15 @@ class DatabaseService {
     String uid,
     String activityId,
   ) async {
-    List activities = [];
-    activities.add(activityId);
+    Timestamp now = Timestamp.now();
+
     try {
       await Firestore.instance
-          .document("users/$uid")
-          .updateData({"activities": FieldValue.arrayUnion(activities)});
+          .document("users/$uid/favorites/$activityId")
+          .setData({
+        "activity": activityId,
+        "createdAt": now,
+      });
     } catch (e) {
       return false;
     }
@@ -210,15 +214,14 @@ class DatabaseService {
       String uid, String activityId) async {
     bool exists = false;
     try {
-      await Firestore.instance.document("users/$uid").get().then((doc) {
-        if (doc.data['activities'] != null) {
-          var confirmedList = List.from(doc.data['activities']);
-
-          if (confirmedList.contains(activityId)) {
-            exists = true;
-          } else {
-            exists = false;
-          }
+      await Firestore.instance
+          .document("users/$uid/favorites/$activityId")
+          .get()
+          .then((doc) {
+        if (doc.data['activity'] != null) {
+          exists = true;
+        } else {
+          exists = false;
         }
       });
       return exists;
@@ -230,37 +233,29 @@ class DatabaseService {
   static Future<void> removeActivityFromFavorites(
       String uid, String activityId) async {
     try {
-      await Firestore.instance.document("users/$uid").get().then((doc) async {
-        if (doc.data['activities'] != null) {
-          var confirmedList = List.from(doc.data['activities']);
-
-          if (confirmedList.contains(activityId)) {
-            List activities = [];
-            activities.add(activityId);
-            try {
-              await Firestore.instance.document("users/$uid").updateData(
-                  {"activities": FieldValue.arrayRemove(activities)});
-            } catch (e) {
-              return false;
-            }
-          }
+      await Firestore.instance
+          .document("users/$uid/favorites/$activityId")
+          .get()
+          .then((doc) async {
+        if (doc.data['activity'] != null) {
+          await Firestore.instance
+              .document("users/$uid/favorites/$activityId")
+              .delete();
         }
-        return true;
       });
-
-      return true;
     } catch (e) {
-      return false;
+      print(e);
     }
   }
 
   static Future<List<Activity>> getActivitiesByIds(List<String> docsIDs) async {
     try {
       List<Activity> activities = [];
-      docsIDs.forEach((id) async {
-        var activity = await getActivityById(id);
+      for (int i = 0; i < docsIDs.length; i++) {
+        Activity activity = await getActivityById(docsIDs[i]);
         activities.add(activity);
-      });
+      }
+
       return activities;
     } catch (e) {
       print(e);
@@ -271,24 +266,23 @@ class DatabaseService {
   static Future<Activity> getActivityById(String docID) async {
     try {
       Activity activity;
+      var doc = await Firestore.instance.document("activities/$docID").get();
 
-      await Firestore.instance.document("activities/$docID").get().then((doc) {
-        activity = Activity(
-          name: doc.data['name'] ?? '',
-          id: doc.data['id'] ?? '',
-          lastUpdate: doc.data['lastUpdate'] ?? '',
-          maxCapacity: doc.data['maxCapacity'] ?? null,
-          preRegistration: doc.data['preRegistration'] ?? false,
-          startDate: doc.data['startDate'] ?? '',
-          startTime: doc.data['startTime'] ?? '',
-          type: doc.data['type'] ?? '',
-          visible: doc.data['visible'] ?? true,
-          description: doc.data['description'] ?? '',
-          speakers: List.from(doc.data['speakers']) ?? '',
-          confirmations: List.from(doc.data['confirmations']) ?? '',
-          location: doc.data['location'] ?? '',
-        );
-      });
+      activity = Activity(
+        name: doc.data['name'] ?? '',
+        id: doc.data['id'] ?? '',
+        lastUpdate: doc.data['lastUpdate'] ?? '',
+        maxCapacity: doc.data['maxCapacity'] ?? null,
+        preRegistration: doc.data['preRegistration'] ?? false,
+        startDate: doc.data['startDate'] ?? '',
+        startTime: doc.data['startTime'] ?? '',
+        type: doc.data['type'] ?? '',
+        visible: doc.data['visible'] ?? true,
+        description: doc.data['description'] ?? '',
+        speakers: List.from(doc.data['speakers']) ?? '',
+        confirmations: List.from(doc.data['confirmations']) ?? '',
+        location: doc.data['location'] ?? '',
+      );
 
       return activity;
     } catch (e) {
@@ -374,15 +368,14 @@ class DatabaseService {
     try {
       List<String> ids = [];
 
-      await Firestore.instance.document("users/$docID").get().then((doc) async {
-        if (doc.data['activities'] != null) {
-          var confirmedList = List.from(doc.data['activities']);
+      QuerySnapshot querySnapshot = await Firestore.instance
+          .collection('users/$docID/favorites')
+          .getDocuments();
+      for (int i = 0; i < querySnapshot.documents.length; i++) {
+        var doc = querySnapshot.documents[i];
+        ids.add(doc.data['activity']);
+      }
 
-          for (int i = 0; i < confirmedList.length; i++) {
-            ids.add(confirmedList[i]);
-          }
-        }
-      });
       return ids;
     } catch (e) {
       return null;
@@ -414,5 +407,18 @@ class DatabaseService {
     } catch (e) {
       return false;
     }
+  }
+
+  static final BehaviorSubject<List<Activity>> myActivitiesStreamController =
+      BehaviorSubject<List<Activity>>();
+
+  static ValueStream<List<Activity>> get myActivitiesStream =>
+      myActivitiesStreamController.stream;
+
+  static void updateActivityStream(String uid) async {
+    var ids = await DatabaseService.getUserActivitiesIds(uid);
+    var newActivities = await DatabaseService.getActivitiesByIds(ids);
+
+    myActivitiesStreamController.add(newActivities);
   }
 }

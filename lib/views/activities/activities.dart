@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:inscritus/models/activity.dart';
 import 'package:inscritus/models/speaker.dart';
 import 'package:inscritus/services/database.dart';
-import 'package:inscritus/views/activities/my_activities.dart';
 import 'package:inscritus/widgets/activities_for_day.dart';
 import 'package:provider/provider.dart';
 
@@ -23,25 +22,15 @@ class ActivitiesState extends State<Activities>
     with SingleTickerProviderStateMixin {
   TabController controller;
   List<Speaker> speakers;
-  List<Activity> activities;
 
   @override
   void initState() {
     super.initState();
-    controller = new TabController(length: 3, vsync: this);
+    controller = new TabController(length: 2, vsync: this);
 
     DatabaseService.getSpeakers().then((value) {
       setState(() {
         speakers = value;
-      });
-    });
-
-    DatabaseService.getUserActivitiesIds(widget.uid).then((value) {
-      DatabaseService.getActivitiesByIds(value).then((newActivities) {
-        print(newActivities);
-        setState(() {
-          activities = newActivities;
-        });
       });
     });
   }
@@ -57,7 +46,6 @@ class ActivitiesState extends State<Activities>
       tabs: <Tab>[
         Tab(text: 'Sábado'),
         Tab(text: 'Domingo'),
-        Tab(text: 'Favoritas'),
       ],
       indicator: BoxDecoration(
         borderRadius: BorderRadius.circular(30.0),
@@ -100,12 +88,6 @@ class ActivitiesState extends State<Activities>
           ActivitiesForDay(
             day: '06',
             speakers: speakers,
-            uid: widget.uid,
-          ),
-          MyActivities(
-            day: '',
-            speakers: speakers,
-            activities: activities,
             uid: widget.uid,
           ),
         ]),
