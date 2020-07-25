@@ -33,6 +33,7 @@ dependencies:
   cpfcnpj: ^1.0.3
   string_validator: ^0.1.4
   shimmer: ^1.1.0
+  like_button: ^0.1.9
 
 flutter:
   uses-material-design: true

@@ -6,6 +6,7 @@ import 'package:inscritus/models/location.dart';
 import 'package:inscritus/models/speaker.dart';
 import 'package:inscritus/services/database.dart';
 import 'package:inscritus/widgets/activity_detail.dart';
+import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 import 'package:flare_flutter/flare_actor.dart';
 
@@ -43,7 +44,27 @@ class _ActivityCardState extends State<ActivityCard> {
     super.initState();
   }
 
-  bool isExpanded = false;
+  Future<bool> onLikeButtonTap(bool isLiked) async {
+    if (!isLiked) {
+      setState(() {
+        isFavorite = true;
+      });
+      await DatabaseService.favoriteActivity(
+        widget.uid,
+        widget.resource.id,
+      );
+    } else {
+      setState(() {
+        isFavorite = false;
+      });
+
+      await DatabaseService.removeActivityFromFavorites(
+        widget.uid,
+        widget.resource.id,
+      );
+    }
+    return !isLiked;
+  }
 
   Widget build(BuildContext context) {
     var splittedDate = widget.resource.startDate.split('-');
@@ -100,33 +121,18 @@ class _ActivityCardState extends State<ActivityCard> {
                         top: 5,
                         right: 10,
                       ),
-                      child: IconButton(
-                        icon: Icon(
-                          !isFavorite ? Icons.star_border : Icons.star,
-                          color: Theme.of(context).primaryColorDark,
-                          size: 30.0,
-                        ),
-                        onPressed: !isFavorite
-                            ? () async {
-                                setState(() {
-                                  isFavorite = true;
-                                });
-                                await DatabaseService.favoriteActivity(
-                                  widget.uid,
-                                  widget.resource.id,
-                                );
-                              }
-                            : () async {
-                                setState(() {
-                                  isFavorite = false;
-                                });
-
-                                await DatabaseService
-                                    .removeActivityFromFavorites(
-                                  widget.uid,
-                                  widget.resource.id,
-                                );
-                              },
+                      child: LikeButton(
+                        onTap: (bool isLiked) {
+                          return onLikeButtonTap(isFavorite);
+                        },
+                        isLiked: isFavorite,
+                        likeBuilder: (bool isLiked) {
+                          return Icon(
+                            isLiked ? Icons.favorite : Icons.favorite_border,
+                            color: isLiked ? Colors.red : Colors.red,
+                            size: 30,
+                          );
+                        },
                       ),
                     ),
                   ],
