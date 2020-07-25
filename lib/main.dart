@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inscritus/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:inscritus/inscritus_app.dart';
+import 'package:inscritus/services/fcm.dart';
 import 'package:inscritus/views/login/login.dart';
 import 'blocs/simple_bloc_delegate.dart';
 import 'views/splash_screen.dart';
@@ -12,12 +13,17 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final UserRepository userRepository = UserRepository();
+  final FCM fcm = FCM();
+
   runApp(
     BlocProvider(
       create: (context) => AuthenticationBloc(
         userRepository: userRepository,
+        fcm: fcm,
       )..add(AppStarted()),
-      child: Inscritus(userRepository: userRepository),
+      child: Inscritus(
+        userRepository: userRepository,
+      ),
     ),
   );
 }

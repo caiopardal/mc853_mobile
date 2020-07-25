@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
+import 'package:flutter_svg/flutter_svg.dart';
 
 class About extends StatelessWidget {
   static String routeName = '/about';
@@ -18,9 +19,9 @@ class About extends StatelessWidget {
               bottom: 25.0,
             ),
             child: Center(
-              child: Image.asset(
-                'assets/flutter_logo.png',
-                height: 180.0,
+              child: SvgPicture.asset(
+                "assets/logo.svg",
+                height: 60.0,
               ),
             ),
           ),

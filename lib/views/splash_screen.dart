@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text('Splash Screen')),
+      body: Center(
+        child: SvgPicture.asset(
+          "assets/logo.svg",
+          height: 60.0,
+        ),
+      ),
     );
   }
 }

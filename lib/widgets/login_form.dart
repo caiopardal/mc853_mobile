@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:inscritus/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:inscritus/repositories/user_repository.dart';
 import '../views/login/login.dart';
@@ -86,7 +87,10 @@ class _LoginFormState extends State<LoginForm> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 20),
-                    child: Image.asset('assets/flutter_logo.png', height: 200),
+                    child: SvgPicture.asset(
+                      "assets/logo.svg",
+                      height: 60.0,
+                    ),
                   ),
                   TextFormField(
                     controller: _emailController,
