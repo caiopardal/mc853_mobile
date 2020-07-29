@@ -131,32 +131,73 @@ Além dessas, você precisará criar algumas coleções dentro de algumas dessas
 
 Explicando um pouco mais de cada tela e casos de uso, temos:
 
+- Login
+
+Nessa tela, os usuários que já possuem conta, podem entrar no app usando seu e-mail e senha.
+
+<p><img src="github_images/login.png" alt="Login"></p>
+
+- Registro
+
+Nessa tela, os usuários podem preencher seus dados e realizar um cadastro.
+
+<p><img src="github_images/register.png" alt="Register"></p>
+
 - Menu lateral: 
 
 Nele estão presentes todas as telas e navegações possíveis do app.
 
 *Usuário comum*: Início, Sobre nós, Minhas atividades, Mapa do evento e Fazer logout.
+<p><img src="github_images/sidebar.png" alt="Sidebar"></p>
+
 *Usuário com privilégios de administrador*: Início, Sobre nós, Scans, Minhas atividades, Mapa do evento e Fazer logout.
+
+<p><img src="github_images/sidebar_admin.png" alt="SidebarAdmin"></p>
 
 - Tela de início:
 
 Nela constam duas tabs principais: Mural de notícias, onde os usuários podem checar avisos sobre o evento e outras informações pertinentes e Atividades, onde os usuários possuem acesso a todas as atividades presentes no cronograma do evento. Além disso, caso você seja um usuário sem permissões de administrador, você também terá acesso a um botão que te leva ao seu QR Code de inscrição do evento.
 
+<p><img src="github_images/initial.png" alt="Initial"></p>
+<p><img src="github_images/announcement.png" alt="Announcements"></p>
+<p><img src="github_images/activities.png" alt="Activities"></p>
+<p><img src="github_images/favorite.png" alt="Favorite"></p>
+
 - Sobre nós
 
 Nela constam todas as informações sobre o evento: Descrição, Local, Organizadores, Informações adicionais e patrocinadores.
+
+<p><img src="github_images/about.png" alt="About"></p>
 
 - Minhas atividades
 
 Nela constam todas as atividades que foram favoritadas por um usuário.
 
+<p><img src="github_images/my_activities.png" alt="MyActivities"></p>
+
 - Scans
 
 Nessa tela, os administradores, poderão escolher a atividade que desejam realizar as inscrições e, após isso, ler os QR Codes de cada participante.
 
+<p><img src="github_images/scans.png" alt="Scans"></p>
+<p><img src="github_images/scan_action.png" alt="Scan Action"></p>
+<p><img src="github_images/scan_activities.png" alt="Scan Activities"></p>
+<p><img src="github_images/permission.png" alt="Permission"></p>
+<p><img src="github_images/read_qr.png" alt="ReadQR"></p>
+<p><img src="github_images/qr_error.png" alt="QR Fail"></p>
+<p><img src="github_images/qr_success.png" alt="QR Success"></p>
+
+- Palestrantes
+
+Nessa tela, estão todos os palestrantes confirmados do evento, contendo suas informações e redes sociais
+
+<p><img src="github_images/speakers.png" alt="Speakers"></p>
+
 - Mapa
 
 Aqui, os usuários podem analisar um mapa completo do evento, podendo ampliar a imagem, caso necessário.
+
+<p><img src="github_images/map.png" alt="Map"></p>
 
 - Fazer logout
 
