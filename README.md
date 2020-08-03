@@ -119,12 +119,11 @@ Além dessas, você precisará criar algumas coleções dentro de algumas dessas
 
 | First Collection | SubCollection | Fields |
 | ---------------- | ------------- | ------ |
-|users|favorites||
-|users|registrations||
-|users|attendances||
-||activity_type||
-||location||
-||announcement||
+|users|favorites|activity: string / createdAt: Timestamp|
+|users|registrations|activity: string / registeredAt: Timestamp / registeredBy: Timestamp|
+|users|attendances|activity: string / registeredAt: Timestamp / registeredBy: Timestamp|
+|activities|attendants|user: string / registeredAt: Timestamp / registeredBy: Timestamp|
+|activities|registrations|user: string / registeredAt: Timestamp / registeredBy: Timestamp|
 
 <!-- USAGE EXAMPLES -->
 ## Uso
