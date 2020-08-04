@@ -110,7 +110,7 @@ Feito isso, basta criar as coleções do Banco de dados com todas as informaçõ
 | --------------- | ----- |
 |users|user|
 |activities|activity|
-|speaker|speaker|
+|speakers|speaker|
 |activity-types|activity_type|
 |locations|location|
 |feed|announcement|
