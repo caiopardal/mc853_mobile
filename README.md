@@ -216,6 +216,7 @@ A estrutura dos arquivos do projeto se dá da seguinte forma:
   |-/ios --> Arquivos de configuração específica para o app iOS
   |-/pubspec.yaml --> Arquivo para gerenciamento das Dependências do projeto
   |-/assets --> Imagens
+  |-/test -> Diretório com todos os testes do projeto
   |-/lib 
     |-/Bloc --> Código dos blocos de gerenciamento de estados do projeto
       |-/authentication --> Bloc de autenticação
