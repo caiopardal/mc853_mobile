@@ -69,6 +69,7 @@ class _MyActivitiesListState extends State<MyActivitiesList> {
   @override
   Widget build(BuildContext context) {
     var _height = MediaQuery.of(context).size.height;
+    var size = MediaQuery.of(context).size.width;
 
     return StreamBuilder<List<Activity>>(
       initialData: DatabaseService.myActivitiesStream.value,
@@ -78,7 +79,6 @@ class _MyActivitiesListState extends State<MyActivitiesList> {
             snapshot.connectionState == ConnectionState.none ||
             snapshot.connectionState == ConnectionState.waiting ||
             snapshot?.data == null) {
-          var size = MediaQuery.of(context).size.width;
           return Padding(
             padding: const EdgeInsets.only(
               top: 25.0,
@@ -86,42 +86,77 @@ class _MyActivitiesListState extends State<MyActivitiesList> {
             child: Column(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(width: 10),
                     Shimmer.fromColors(
                       baseColor: Colors.grey[300],
                       highlightColor: Colors.grey[100],
                       enabled: true,
                       child: Container(
-                        width: size * 0.5,
-                        height: 10,
+                        margin: const EdgeInsets.only(
+                          left: 10,
+                        ),
+                        width: size * 0.15,
+                        height: 50,
                         color: Colors.white,
                       ),
                     ),
-                  ],
-                ),
-                Shimmer.fromColors(
-                  baseColor: Colors.grey[300],
-                  highlightColor: Colors.grey[100],
-                  enabled: true,
-                  child: Container(
-                    margin: const EdgeInsets.only(
-                      left: 15,
+                    Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(width: 10),
+                            Shimmer.fromColors(
+                              baseColor: Colors.grey[300],
+                              highlightColor: Colors.grey[100],
+                              enabled: true,
+                              child: Container(
+                                width: size * 0.6,
+                                height: 10,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Shimmer.fromColors(
+                          baseColor: Colors.grey[300],
+                          highlightColor: Colors.grey[100],
+                          enabled: true,
+                          child: Container(
+                            margin: const EdgeInsets.only(
+                              left: 10,
+                              top: 15,
+                            ),
+                            width: size * 0.6,
+                            height: 10,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
                     ),
-                    width: size * 0.3,
-                    height: 10,
-                    color: Colors.white,
-                  ),
-                ),
-                SizedBox(
-                  height: 25,
+                  ],
                 ),
               ],
             ),
           );
         } else {
           List<Activity> activities = snapshot.data;
+
+          if (activities.isEmpty) {
+            return Container(
+              margin: const EdgeInsets.only(
+                top: 20,
+              ),
+              child: Text(
+                "Você ainda não possui atividades favoritadas! Vá até a lista de atividades e favorite alguma para que esta apareça aqui :)",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            );
+          }
+
           return Container(
             height: _height,
             child: ListView.builder(

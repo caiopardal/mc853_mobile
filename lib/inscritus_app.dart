@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hidden_drawer_menu/hidden_drawer/hidden_drawer_menu.dart';
 import 'package:hidden_drawer_menu/hidden_drawer/screen_hidden_drawer.dart';
-import 'package:inscritus/blocs/authentication_bloc/authentication_bloc.dart';
+import 'package:inscritus/blocs/authentication/authentication_bloc.dart';
 import 'package:inscritus/views/about_app/about.dart';
 import 'package:inscritus/views/activities/my_activities.dart';
 import 'package:inscritus/views/home/home_screen.dart';

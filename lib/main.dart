@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:inscritus/blocs/authentication_bloc/authentication_bloc.dart';
+import 'package:inscritus/blocs/authentication/authentication_bloc.dart';
 import 'package:inscritus/inscritus_app.dart';
 import 'package:inscritus/services/fcm.dart';
 import 'package:inscritus/views/login/login.dart';

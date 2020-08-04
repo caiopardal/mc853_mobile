@@ -60,6 +60,8 @@
 
 O aplicativo Inscritus é um projeto feito para facilitar a organização e visualização de seus eventos por parte de seus usários. Nele seus usuários poderão criar suas próprias contas, acessarem a programação do seu evento, favoritar atividades, encontrarem mais informações sobre o evento e muito mais. Já para a organização do evento, ele conta com scanner de QR Codes e funções personalizadas para auxiliar no gerenciamento das presenças e inscrições dos seus participantes.
 
+Obs: Este projeto também possui uma plataforma web mobile que pode ser usado concomitantemente com o aplicativo aqui desenvolvido, apresentando novas funcionalidades para administradores e usuários. Para saber mais, acesse o [repositório do site](https://github.com/leohbatista/inscritus-web).
+
 ### Feito com
 
 O aplicativo foi desenvolvido utilizando a linguagem de programação Dart em conjunto com a tecnologia para construir aplicações mobile e web feita pelo Google, Flutter. Além disso, conta com o uso do Firebase como banco de dados e API principal. 
@@ -115,7 +117,6 @@ Feito isso, basta criar as coleções do Banco de dados com todas as informaçõ
 |locations|location|
 |feed|announcement|
 
-Além dessas, você precisará criar algumas coleções dentro de algumas dessas principais
 
 | First Collection | SubCollection | Fields |
 | ---------------- | ------------- | ------ |
@@ -124,6 +125,8 @@ Além dessas, você precisará criar algumas coleções dentro de algumas dessas
 |users|attendances|activity: string / registeredAt: Timestamp / registeredBy: Timestamp|
 |activities|attendants|user: string / registeredAt: Timestamp / registeredBy: Timestamp|
 |activities|registrations|user: string / registeredAt: Timestamp / registeredBy: Timestamp|
+
+**ATENÇÃO:** Nenhuma das collections acima precisarão ser criadas previamente. As mesmas serão criadas automaticamente conforma a utilização do sistema.
 
 <!-- USAGE EXAMPLES -->
 ## Uso
@@ -204,6 +207,27 @@ Aqui, os usuários podem analisar um mapa completo do evento, podendo ampliar a 
 
 Ao clicar nesse botão, o usuário é deslogado do aplicativo e sua sessão encerrada.
 
+### Estrutura de pastas
+
+A estrutura dos arquivos do projeto se dá da seguinte forma:
+```
+/
+  |-/android --> Arquivos de configuração específica para o app Android
+  |-/ios --> Arquivos de configuração específica para o app iOS
+  |-/pubspec.yaml --> Arquivo para gerenciamento das Dependências do projeto
+  |-/assets --> Imagens
+  |-/lib 
+    |-/Bloc --> Código dos blocos de gerenciamento de estados do projeto
+      |-/authentication --> Bloc de autenticação
+      |-/login --> Bloc de login dos usuários
+      |-/register --> Bloc de registro de usuários
+    |-/helpers --> Arquivos para auxiliar algumas funções do projeto 
+    |-/models --> Definição dos modelos do banco de dados 
+    |-/repositories --> Repositórios contendo dados do usuário 
+    |-/services --> Serviços do sistema 
+    |-/views --> Implementação da UI das telas do projeto 
+    |-/widgets --> Implementação da UI dos componentes do projeto     
+```
 
 <!-- CONTRIBUTING -->
 ## Contribuições
