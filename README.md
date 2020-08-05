@@ -246,7 +246,7 @@ Contribuições são o que tornam a comunidade open-source um lugar incrível pa
 <!-- LICENSE -->
 ## Licença
 
-Distribuído dentro da licença MIT. Veja `LICENSE` para mais informações.
+Distribuído dentro da licença MIT. Veja [LICENSE](https://github.com/caiopardal/mc853_mobile/blob/master/LICENSE) para mais informações.
 
 <!-- CONTACT -->
 ## Contato
