@@ -464,12 +464,12 @@ class DatabaseService {
       await Firestore.instance.document("users/$uid").setData({
         "uid": uid,
         "cpf": cpf,
-        "name": name,
+        "name": name.toUpperCase(),
         "phone": phone,
         "email": email,
         "isActive": true,
         "isAdmin": false,
-        "emailVerified": false,
+        "emailVerified": true,
         "createdAt": now,
         "lastUpdate": now,
       });

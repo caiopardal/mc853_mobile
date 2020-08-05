@@ -10,24 +10,9 @@ import 'views/splash_screen.dart';
 import 'repositories/user_repository.dart';
 
 void main() {
-  _main(
-    null,
-  );
-}
-
-void mainTest(
-  UserRepository userRepository,
-) {
-  _main(
-    userRepository,
-  );
-}
-
-void _main(
-  UserRepository userRepository,
-) {
   WidgetsFlutterBinding.ensureInitialized();
   BlocSupervisor.delegate = SimpleBlocDelegate();
+  final UserRepository userRepository = UserRepository();
   final FCM fcm = FCM();
 
   runApp(
